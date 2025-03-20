@@ -93,7 +93,28 @@ exports.dashboard = async(req,res)=>{
     }
   // 
 }
-
+ const get_user_id= async function(req,res,Id, next){
+    const user_id = Id;
+    const newuser= await User.findOne({_id:id})
+     req.newUser = newuser
+     
+ }
+exports.investmentPlans= async(req,res)=>{
+    locals={
+        title:"investment Plans"
+    }
+    const Id= req.user.id;
+    try{
+         const getuser = await User.findOne({_id:Id});
+         if(getuser){
+            res.render("dashboard/investments",{locals,getuser});
+         }else{
+            res.status(400).json({error:"could not find user"});
+         }
+    }catch(err){
+       res.status(400).json({error:err.message})
+    }
+}
 exports.logout = async(req,res)=>{
     res.clearCookie("jwt");
     res.redirect('/signin');

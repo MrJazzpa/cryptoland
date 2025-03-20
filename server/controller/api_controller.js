@@ -242,3 +242,5 @@ exports.post_signup = async(req, res) =>{
         res.status(500).json({status:"failed", message:error});
    }
  }
+
+ 
