@@ -13,7 +13,6 @@ router.get("/signup",control_pages.signup)
 router.get("/signin",control_pages.signin)
 router.get("/passwordReset",control_pages.reset_password)
 router.get("/verificationcode",control_pages.verify_password);
-router.get('/logout',api_controller.logout);
 router.get('/status',api_controller.status);
 
 
