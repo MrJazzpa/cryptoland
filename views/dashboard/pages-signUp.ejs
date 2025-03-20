@@ -1,0 +1,108 @@
+
+<%- include('template/auth_head') %>
+<body>
+	<main class="d-flex w-100">
+		<div class="container d-flex flex-column">
+			<div class="row vh-100">
+				<div class="col-sm-10 col-md-8 col-lg-6 col-xl-5 mx-auto d-table h-100">
+					<div class="d-table-cell align-middle">
+
+						<div class="text-center mt-4">
+							<h1 class="h2">Get started</h1>
+							<p class="lead">
+								Start creating the best possible user experience for you customers.
+							</p>
+						</div>
+
+						<div class="card">
+							<div class="card-body">
+								 <div id="msg"></div>
+								<div class="m-sm-3">
+									<form id="form_register">
+										
+										<div class="mb-3">
+											<label class="form-label">Full name</label>
+											<input class="form-control form-control-lg" type="text" id="name" name="name" placeholder="Enter your name" required />
+										</div>
+										<div class="mb-3">
+											<label class="form-label">Email</label>
+											<input class="form-control form-control-lg" type="email" id="R_email" name="R_email" required />
+										</div>
+										<div class="mb-3">
+											<label class="form-label">Password</label>
+											<input class="form-control form-control-lg" type="password" id="password" name="password" required/>
+										</div>
+										<div class="mb-3">
+											<label class="form-label">  Comfirm Password</label>
+											<input class="form-control form-control-lg" type="password" id="con-password" name="con-password" placeholder="Enter password" required />
+										</div>
+										<div class="d-grid gap-2 mt-3">
+											<button type="submit" class="btn btn-primary">Register User</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+						<div class="text-center mb-3">
+							Already have account? <a href="/signin">Log In</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+	  $(document).ready(function(){
+		  $('#form_register').on('submit',function(e){
+                e.preventDefault();
+				let msg="";
+                var  name = $('#name').val();
+                var get_email = $('#R_email').val();
+                let password = $('#password').val();
+                let con_password = $('#con-password').val();
+				let getinput = $('#getinput').val();
+
+				if(password != con_password){
+					msg ="<div class='alert alert-danger alert-dismissible fade show'>Passwords does not match</div>";
+					$('#msg').append(msg)
+				}else{
+
+					 
+					$.post('http://localhost:5000/api/signup',
+				       {
+
+						    Name:name,
+							Email:get_email,
+							Password:password,
+							con_password:con_password
+							
+				       },
+					   function(data){
+                           if(data.status==200){
+							msg ="<div class='alert alert-success alert-dismissible fade show'>Veryication email has been sent to '"+get_email+"'</div>";
+							$('#msg').append(msg)
+							//sending email to the verification page
+							 localStorage.setItem('verify_email',get_email);
+							 window.location.replace('/verificationcode');
+							 
+						   }else if(data.status==403){
+							msg ="<div class='alert alert-warning alert-dismissible fade show'>"+get_email+" already exists</div>";
+							$('#msg').append(msg)
+						   }else{
+							msg ="<div class='alert alert-danger alert-dismissible fade show'>failed to register user </div>";
+							$('#msg').append(msg)
+						   }
+					   })
+					
+				}
+            
+               
+		  })
+	  })
+	</script>
+</body>
+
+</html>

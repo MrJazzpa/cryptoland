@@ -1,0 +1,146 @@
+<%- include('template/auth_head') %>
+<body>
+	<main class="d-flex w-100">
+		<div class="container d-flex flex-column">
+			<div class="row vh-100">
+				<div class="col-sm-10 col-md-8 col-lg-6 col-xl-5 mx-auto d-table h-100">
+					<div class="d-table-cell align-middle">
+
+						<div class="text-center mt-4">
+							<h1 class="h2">VERIFY PASSWORD</h1>
+							
+						</div>
+
+						<div class="card">
+							<div class="card-body">
+								<div id="msg"></div>
+								<div class="m-sm-3">
+									<form id="check_verification_code">
+										
+										<div class="mb-3">
+											<label class="form-label">Enter Verification</label>
+											<input class="form-control form-control-lg" style="height: 50px; text-align:center;" type="text" id="verify_code" name="verify_code" placeholder="Enter Verification Code" required/>
+										</div>
+										
+										<div class="d-grid gap-2 mt-3">
+											<button type="submit" class="btn btn-lg btn-primary">Verify Code</button>
+										</div>
+										<div class="d-grid gap-2 mt-3">
+											<button type="button" class="btn btn-lg btn-outline-primary" id="resend_verification_code">Resend Password</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+						<div class="text-center mb-3">
+							<p id="countdown"  style="color: blue;">01:00</p>
+						     <span>verification code expires in 2 minutes</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<script src="js/app.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script>
+		$(document).ready(function(){
+			 let get_email = "";
+			 let msg ="";
+			 
+			 //getting data from localstorage of previous page
+			let verify_email=localStorage.getItem('verify_email');
+			if(verify_email){
+                get_email = verify_email;
+				
+			}else{
+				  alert('email could not not be found')
+			}
+			// setting timer count down
+			let totalTime = 60;
+			 let timer;
+             function formatTime(seconds){
+				let minutes = Math.floor(seconds / 60);
+                let secs = seconds % 60;
+				return `${minutes.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+			 }
+			 $('#resend_verification_code').prop('disabled', true);
+			 clearInterval(timer);
+			 totalTime = 60;
+			 $('#countdown').text(formatTime(totalTime));
+			 timer = setInterval(function(){
+				totalTime--;
+				$('#countdown').text(formatTime(totalTime));
+				if(totalTime<=0){
+					clearInterval(timer);
+					$('#countdown').text("00:00");
+					$('#resend_verification_code').prop('disabled', false);
+					$.post('http://localhost:5000/api/update_code_expired',
+					{
+                         Email:get_email
+
+					},
+					function(success){
+						if(success.status==200){
+							msg ="<div class='alert alert-success alert-dismissible fade show'> code has expired please resend  code</div>";
+							$('#msg').append(msg)
+							
+						}
+					}
+				)
+					
+				}
+			 },1000);
+
+
+			$('#resend_verification_code').on('click',function(){
+				$.post('http://localhost:5000/api/resend_verification_code',
+				{
+                     Email:get_email
+
+				},
+				function(data){
+					if(data.status==200){
+						msg ="<div class='alert alert-success alert-dismissible fade show'>Verifiication Code has been sent to "+get_email+"</div>";
+							$('#msg').append(msg)
+							
+					}else if(data.status==403){
+						msg ="<div class='alert alert-danger alert-dismissible fade show'>Verification Code  error </div>";
+						$('#msg').append(msg)
+					}else{
+						msg ="<div class='alert alert-danger alert-dismissible fade show'>The server must have encountered error</div>";
+							$('#msg').append(msg)
+					}
+
+				});
+			});
+
+			$('#check_verification_code').on('submit',function(e){
+				e.preventDefault();
+				let verify_code = $('#verify_code').val();
+				$.post('http://localhost:5000/api/check_verification_code',
+				{
+					verifyCode: verify_code,
+					Email:get_email
+				},
+				function(data){
+					if(data.status == 200){
+						window.location.replace('/signin');
+					}else if(data.status==405){
+						msg ="<div class='alert alert-danger '> verification code has expired  </div>";
+						$('#msg').append(msg)
+					}else{
+						msg ="<div class='alert alert-danger alert-dismissible fade show'>code error</div>";
+						$('#msg').append(msg)
+					}
+				}
+			)
+
+			})
+		});
+	</script>
+
+</body>
+
+</html>
