@@ -3,6 +3,9 @@ const bcrypt = require('bcryptjs');
 const transporter = require('../middleware/sendmail');
 const verify_model = require('../models/verificationCode_model');
  const jwt = require('jsonwebtoken');
+const account_model = require('../models/account_model');
+const deposite_model =require('../models/depositedMoney_model');
+const transaction_history_model = require('../models/transaction_history_model');
 //post requests
 const sendmail = async function(from,to,subject,text){
     const mailOptions ={
@@ -50,6 +53,7 @@ exports.post_signup = async(req, res) =>{
 
                     const check= sendmail(process.env.EMAIL,email,subject,quick_text);
                     if(check){
+                        //const create_account_balance =await account_model.create(us)
                         res.status(200).json({message:"email has been sent "+email,status:200})
                        
                     }else{
@@ -243,4 +247,81 @@ exports.post_signup = async(req, res) =>{
    }
  }
 
+ exports.addvalue = async(req,res)=>{
+     const total = req.body.Total_amount;
+     const btc_price = req.body.btc_price;
+     const eth_price = req.body.eth_price;
+     const doge_price = req.body.doge_price;
+     const usdt_price = req.body.usdt_price
+     const userId = req.body.UserId;
+      const totalformatted= total.toLocaleString();
+      const check_user = await account_model.findOne({userid:userId})
+      if(check_user.userid!=""){
+           const update = await account_model.updateOne({userid:userId},{Btc_Amount:btc_price,Ethereum_Amount:eth_price,Doge_Amount:doge_price,Usdt_Amount:usdt_price,Total_Balance:totalformatted})
+           if(update){
+                const get_account_balance = await account_model.findOne({userid:userId},{Total_Balance:1})
+                console.log(get_account_balance.Total_Balance)
+               res.json({currentBalance:get_account_balance.Total_Balance,status:200});
+           }
+      }else{
+        await account_model.create({userid:userId,Btc_Amount:btc_price,Ethereum_Amount:eth_price,Doge_Amount:doge_price,Usdt_Amount:usdt_price,Total_Balance:total})
+       .then(result=>{
+        if(result){
+           res.json({success:"successfull",status:200});
+        }else{
+           res.json({success:"failed",status:401});
+        }
+     }).catch(err=>{
+           res.status(400).json({error:err.message});
+     })
+      }
+     
+ }
+
+ exports.update_balance = async(req,res)=>{
+       const userid = req.body.UserId;
+       const Btc_Amount = parseFloat(req.body.Btc_Amount);
+       const Ethereum_Amount = parseFloat(req.body.Ethereum_Amount);
+       const Doge_Amount = parseFloat(req.body.Doge_Amount);
+       const Usdt_Amount = parseFloat(req.body.Usdt_Amount);
+       const add_balance = Btc_Amount+Ethereum_Amount+Doge_Amount+Usdt_Amount
+       try{
+             const get_balance = await account_model.findOne({userid:userid},{Total_Balance:1});
+               const initialBalance = parseFloat(get_balance.Total_Balance);
+               const Total_Balance = add_balance+initialBalance;
+               const update_account= await account_model.updateOne({userid:userid},{Btc_Amount:Btc_Amount,Ethereum_Amount:Ethereum_Amount,Doge_Amount:Doge_Amount,Usdt_Amount:Usdt_Amount,Total_Balance:Total_Balance.toLocaleString('en-Us',{minimumFractionDigits:2})})
+                if(update_account){
+                    res.json({success:"updated",status:200})
+                }else{
+                    res.json({error:"could not update"})
+                }
+             
+         
+       }catch(err){
+            res.json({error:err.message});
+       }
  
+  }
+
+  exports.transaction_history = async(req,res)=>{
+    let length=35;
+     const chars = process.env.TRANSACTION_TOKEN
+     let result = "";
+     for (let i = 0; i < length; i++) {
+         result += chars.charAt(Math.floor(Math.random() * chars.length));
+     }
+     try{
+        const userid = req.body.UserId;
+        const amount = req.body.Amount;
+        const insert_transaction = await transaction_history_model.create({userid:userid,transactionId:result,amount:amount})
+        if(insert_transaction){
+            res.json({data:"success",tID:result,status:200});
+        }else{
+            res.json({error:"failed to insert transaction"})
+        }
+     }catch(err){
+        res.json({error:err.message})
+     }
+      
+     
+  }

@@ -89,6 +89,7 @@
                              <% if (getuser) { %>
                                 <span class="text-dark">
                                     <%= getuser.name %>
+                                    <input type="hidden" name="userid" id="userid" value="<%=getuser._id %>">
                                 </span>
                              <% } %>
                     </a>

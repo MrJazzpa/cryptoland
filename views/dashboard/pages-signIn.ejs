@@ -71,7 +71,9 @@
 						
 					}else if(data.status==403){
 						msg ="<div class='alert alert-danger alert-dismissible fade show'>"+data.error+"</div>";
-						$('#msg').append(msg)
+						$('#msg').append(msg).fadeIn().delay(1000).fadeOut();
+						docume
+						
 					}else{
 						console.log('Wrong Username/ Password');
 					}

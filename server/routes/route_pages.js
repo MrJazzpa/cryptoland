@@ -19,6 +19,8 @@ router.get('/status',api_controller.status);
 //User Dashboard Routes
 router.get ('/dashboard',verify_ejs_token,control_pages.dashboard)
 router.get('/investments',verify_ejs_token,control_pages.investmentPlans)
+router.get('/wallet',verify_ejs_token,control_pages.wallet)
+router.get('/test',control_pages.test)
 router.get('/logout',control_pages.logout);
  
 module.exports = router;

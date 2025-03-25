@@ -1,0 +1,447 @@
+<%- include('template/header') %>
+	<%- include('template/sidebar') %>
+		<%- include('template/header_main') %>
+			<main class="content">
+				<% if (get_balance) { %>						
+				<div class="container-fluid p-0">
+
+					<h1 class="h3 mb-3">Wallet</h1>
+					<div class="row">
+						<div class="col-12">
+							<div class="card">
+
+								<div class="card-body">
+									<div class="row">
+
+										<div class="col-md-6">
+											<div class="card">
+
+												<div class="card-body">
+													<div class="row">
+														<div class="col mt-0">
+															<h5 class="card-title">Total Wallet Balance</h5>
+														</div>
+
+														<div class="col-auto">
+															<div class="stat text-primary"
+																style="background-color:forestgreen;">
+																<i class="align-middle fa-solid fa-wallet"
+																	style="color: white;"></i>
+															</div>
+														</div>
+													</div>
+													<h1 class="mt-1 mb-3" id="totalBalance">$<%= get_balance.Total_Balance %></h1>
+													<h1 class="mt-1 mb-3" id="totalBalance_current"></h1>
+													 <input type="hidden" id="static_account_balance" value="<%= get_balance.Total_Balance %>">
+													<!-- <input type="text" id="dynamic_account_balance" value="">-->
+													<div class="mb-0">
+														<span class="text-danger">
+															<i class="mdi mdi-arrow-bottom-right" id=""></i>
+														</span>
+														<span class="text-muted"></span>
+													</div>
+												</div>
+
+											</div>
+
+										</div>
+
+										<div class="col-md-6">
+											<div class="card">
+
+												<div class="card-body">
+													<div class="row">
+														<div class="col mt-0">
+															<h5 class="card-title">Deposite Balance</h5>
+														</div>
+
+														<div class="col-auto">
+															<div class="stat text-primary"
+																style="background-color:#3B7DDD;">
+																<i class="align-middle fa-solid fa-dollar"
+																	style="color: white;"></i>
+															</div>
+														</div>
+													</div>
+													<h1 class="mt-1 mb-3" id="totalBalance">$<%= get_balance.Total_Balance %></h1>
+													<h1 class="mt-1 mb-3" id="totalBalance_current"></h1>
+													 <input type="hidden" id="static_account_balance" value="<%= get_balance.Total_Balance %>">
+													<!-- <input type="text" id="dynamic_account_balance" value="">-->
+													<div class="mb-0">
+														<span class="text-danger">
+															<i class="mdi mdi-arrow-bottom-right" id=""></i>
+														</span>
+														<span class="text-muted"></span>
+													</div>
+												</div>
+
+											</div>
+
+										</div>
+									</div>
+									<!--row for buttons-->
+									<div class="row">
+										<div class="col-md-12">
+											<div class="card">
+												<div class="card-body">
+													<div>
+														<button class="btn btn-outline-primary" data-bs-toggle="modal"
+															data-bs-target="#exampleModal"></i> Deposit Funds</button>
+														<button class="btn btn-outline-secondary" type="button"
+															data-bs-toggle="collapse"
+															data-bs-target="#multiCollapseExample2"
+															aria-expanded="false"
+															aria-controls="multiCollapseExample2"><i
+																data-feather="arrow-down"></i>Withdraw Funds</button>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div><!--end of row for buttons-->
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+
+
+					<div class="row">
+						<div class="col-md-12">
+
+							<div class="card">
+
+								<div class="card-body">
+									
+									<div class="row">
+
+										<div class="col-md-6">
+											<div class="card">
+
+												<div class="card-body">
+													<div class="row">
+														<div class="col mt-0">
+															<h5 class="card-title">BTC Balance</h5>
+														</div>
+
+														<div class="col-auto">
+															<div class="stat text-primary"
+															style="background-color: orange;">
+																<i class="align-middle fa-brands fa-btc"
+																	style="color: white;"></i>
+															</div>
+														</div>
+													</div>
+													<h1 class="mt-1 mb-3" id="staticBTCPrice">0.00</h1>
+													
+													<input type="hidden" id="static_btc_price" value="<%= get_balance.Btc_Amount %>" >
+													<input type="hidden" id="dynamic_btc_price" name="dynamic_btc_price" value="0" readonly >
+													<div class="mb-0">
+														<span class="text-danger">
+															<i class="mdi mdi-arrow-bottom-right" id="btcChange"></i>
+														</span>
+														<span class="text-muted"></span>
+													</div>
+													<div class="row">
+														<div class="col-md-4"></div>
+														<div class="col-md-4"></div>
+														<div class="col-md-4">
+															<button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+															data-bs-target="#BtcModal">Deposit BTC</button>
+														</div>
+													</div>
+												</div>
+
+											</div>
+
+										</div><!--end of column-->
+
+										<div class="col-md-6">
+											<div class="card">
+
+												<div class="card-body">
+													<div class="row">
+														<div class="col mt-0">
+															<h5 class="card-title">Ethereum Balance</h5>
+														</div>
+
+														<div class="col-auto">
+															<div class="stat text-primary"
+																style="background-color:#3B7DDD;">
+																<i class="align-middle fa-brands fa-ethereum"
+																	style="color: white;"></i>
+															</div>
+														</div>
+													</div>
+													<h1 class="mt-1 mb-3" id="staticETHPrice">0.00</h1>
+													<input type="hidden" id="static_eth_price" value="<%= get_balance.Ethereum_Amount %>" >
+													<input type="hidden" id="dynamic_eth_price" name="dynamic_eth_price" value="0" readonly >
+													<div class="mb-0">
+														<span class="text-danger">
+															<i class="mdi mdi-arrow-bottom-right" id="ethChange24h"></i>
+														</span>
+														<span class="text-muted"></span>
+													</div>
+													<div class="row">
+														<div class="col-md-4"></div>
+														<div class="col-md-4"></div>
+														<div class="col-md-4">
+															<button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+															data-bs-target="#EthModal">Deposit ETH</button>
+														</div>
+													</div>
+												</div>
+
+											</div>
+
+										</div><!--end of column-->
+										<div class="col-md-6">
+											<div class="card">
+
+												<div class="card-body">
+													<div class="row">
+														<div class="col mt-0">
+															<h5 class="card-title">USDT Balance</h5>
+														</div>
+
+														<div class="col-auto">
+															<div class="stat text-primary"
+																style="background-color:forestgreen;">
+																<i class="align-middle fa-solid fa-dollar-sign"
+																	style="color: white;"></i>
+															</div>
+														</div>
+													</div>
+													<h1 class="mt-1 mb-3" id="staticUSDTPrice">0.00</h1>
+													<input type="hidden" id="static_usdt_price" value="<%= get_balance.Doge_Amount %>" >
+													<input type="hidden" id="dynamic_usdt_price" name="dynamic_usdt_price" value="0" readonly >
+													<div class="mb-0">
+														<span class="text-danger">
+															<i class="mdi mdi-arrow-bottom-right" id="usdtChange24h"></i>
+														</span>
+														<span class="text-muted"></span>
+													</div>
+													<div class="row">
+														<div class="col-md-4"></div>
+														<div class="col-md-4"></div>
+														<div class="col-md-4">
+															<button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+															data-bs-target="#UsdtModal">Deposit USDT</button>
+														</div>
+													</div>
+												</div>
+
+											</div>
+
+										</div><!--end of column-->
+
+										<div class="col-md-6">
+											<div class="card">
+                                                
+												<div class="card-body">
+													<div class="row">
+														<div class="col mt-0">
+															<h5 class="card-title">DOGE Balance</h5>
+														</div>
+
+														<div class="col-auto">
+															<div class="stat text-primary"
+																style="background-color:rgb(199, 163, 45)">
+																<i class="align-middle fa-solid fa-d"
+																	style="color: white;"></i>
+															</div>
+														</div>
+													</div>
+													<h1 class="mt-1 mb-3" id="staticDOGEPrice">0.00</h1>
+													
+													
+													<input type="hidden" id="static_doge_price" value="<%= get_balance.Usdt_Amount %>" >
+													<input type="hidden" id="dynamic_doge_price" name="dynamic_doge_price" value="0" readonly >
+													<div class="mb-0">
+														<span class="text-danger">
+															<i class="mdi mdi-arrow-bottom-right" id="dogeChange24h"></i>
+														</span>
+														<span class="text-muted"></span>
+													</div>
+													<div class="row">
+														<div class="col-md-4"></div>
+														<div class="col-md-4"></div>
+														<div class="col-md-4">
+															<button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+															data-bs-target="#DogeModal">Deposit DOGE</button>
+														</div>
+													</div>
+												</div>
+
+											</div>
+
+										</div><!--end of column-->
+										
+
+									</div>
+
+								</div>
+							</div>
+
+
+
+						</div>
+					</div>
+
+				</div>
+				<% } %>
+				<!-- Modal -->
+				<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+					aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">Bank Deposite using Paypal</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+									aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+							    <form  id="deposit">
+									<div  class="row">
+										<div class="col-md-12">
+											<label for="" style="margin-bottom: 2%;">Amount</label>
+											
+											<input type="text" class="form-control" id="amount" name="amount" style="margin-bottom: 2%; height: 40px;" placeholder="5000"  required  >
+										</div>
+										<div class="col-md-12">
+											<label for=""> Send amount to the email address bellow</label>
+											<input type="text" class="form-control" id= "copy_email" value="walisonmichael8@gmail.com"  style="height: 40px; margin-top: 2%;" readonly >
+											<span id="copyMsg" style="display: none; color: green;">Copied!</span>
+										</div>
+                                        <div class="col-md-8">
+											 <button type="button" id="copy_btn" class="btn btn-success" style="margin-top: 2%;">copy </button>
+										</div>
+									</div>
+								
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+								<button type="submit" class="btn btn-primary">i have paid</button>
+							</div>
+						</form>
+						</div>
+					</div>
+				</div>
+
+				<!-- Modal BTC -->
+				<div class="modal fade" id="BtcModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+					aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+									aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								...
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-primary">Save changes</button>
+							</div>
+						</div>
+					</div>
+				</div><!-- End of Btc Moldal-->
+
+				<!-- Modal ETH -->
+				<div class="modal fade" id="EthModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+					aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+									aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								...
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-primary">Save changes</button>
+							</div>
+						</div>
+					</div>
+				</div><!-- End of eth Moldal-->
+
+				<!-- Modal USDT -->
+				<div class="modal fade" id="UsdtModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+					aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+									aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								...
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-primary">Save changes</button>
+							</div>
+						</div>
+					</div>
+				</div><!-- End of  Modal-->
+
+				<!-- Modal DOGE -->
+				<div class="modal fade" id="DogeModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+					aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+									aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								...
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-primary">Save changes</button>
+							</div>
+						</div>
+					</div>
+				</div><!-- End of Moldal-->
+
+
+				<!--Model Popup starts-->
+<div class="container">
+    <div class="row">
+       
+        <div class="modal fade" id="successModal" role="dialog" style="border: none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-success text-white">
+                        <button type="button"  class="close bg-success text-white" data-dismiss="modal" aria-label="" style="border:none"><span>×</span></button>
+                     </div>
+					
+                    <div class="modal-body">
+                       
+						<div class="thank-you-pop">
+							<h1>Thank You!</h1>
+							<p> Go to your transaction history and upload reciept for confirmation</p>
+							<!--<h6 class="cupon-pop">Transaction  Id: <span id="transactionid">12345</span></h6>-->
+							
+ 						</div>
+                         
+                    </div>
+					
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Model Popup ends-->
+
+			</main>
+
+			<%- include('template/footer') %>

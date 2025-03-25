@@ -13,6 +13,8 @@ router.post('/check_verification_code',api_controller.check_verification_code);
 router.post('/delete_verification_code',api_controller.delete_verification_code);
 router.post('/update_code_expired',api_controller.code_expired)
 router.post('/PasswordReset',api_controller.post_password_reset)
-
+router.post('/add_value',api_controller.addvalue);
+router.post('/update_account',api_controller.update_balance);
+router.post('/transaction_history',api_controller.transaction_history);
 
 module.exports = router

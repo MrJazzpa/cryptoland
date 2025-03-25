@@ -18,10 +18,16 @@
 
 <script src="js/app.js"></script>
 <script src="js/btc_trade_view.js"></script>
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+    <script src="js/ethereum_crypto.js"></script>
+    <script src="js/usdt_crypto.js"></script>
+    <script src="js/crypto_doge.js"></script>
+    <script src="js/add_money_account.js"></script>
+    <script src="js/copy.js"></script>
+    <script src="js/transaction_history.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var ctx = document.getElementById("chartjs-dashboard-line").getContext("2d");
@@ -339,6 +345,77 @@
     setInterval(getUSDTPrice, 10000);
 </script>
 
+<script>
+    $(document).ready(function(){
+        let staticBTCPrice = parseFloat($('#static_btc_price').val().replace(/,/g,""))
+        let totalBalance = $('#static_account_balance').val();
+        let lastBTCPrice = null;
+        function fetchBTCPrice() {
+              if(staticBTCPrice==0.00){
+              }else{
+                $.ajax({
+                url: 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd',
+                type: 'GET',
+                success: function(response) {
+                    let livePrice = response.bitcoin.usd; // Get live BTC price
+                    console.log("Live BTC Price:", livePrice);
+
+                    // First time fetching BTC price, set lastBTCPrice & staticBTCPrice
+                    if (lastBTCPrice === null) {
+                        lastBTCPrice = livePrice;
+                       // staticBTCPrice = livePrice; // Set static BTC price same as live
+                        updateUI(livePrice, 0); // No change on first call
+                        return;
+                    }
+
+                    // Calculate percentage change
+                    let percentageChange = ((livePrice - lastBTCPrice) / lastBTCPrice) * 100;
+                    console.log("BTC Change Percentage:", percentageChange.toFixed(2) + "%");
+
+                    // Adjust static BTC price based on percentage change
+                    staticBTCPrice *= (1 + (percentageChange / 100));
+
+                    // Adjust total account balance accordingly
+                    totalBalance *= (1 + (percentageChange / 100));
+
+                    // Update last BTC price
+                    lastBTCPrice = livePrice;
+
+                    // Update UI
+                    updateUI(livePrice, percentageChange);
+                },
+                error: function() {
+                    console.error("Error fetching BTC price");
+                }
+            });
+         }
+        }
+
+        function updateUI(livePrice, percentageChange) {
+            // Format numbers with commas
+            let formattedLivePrice = livePrice.toLocaleString("en-US", { minimumFractionDigits: 2 });
+            let formattedStaticPrice = staticBTCPrice.toLocaleString("en-US", { minimumFractionDigits: 2 });
+            let formattedTotalBalance = totalBalance.toLocaleString("en-US", { minimumFractionDigits: 2 });
+            let formattedChange = percentageChange.toFixed(2);
+
+            // Update HTML using jQuery
+           // $("#liveBTCPrice").html(`$${formattedLivePrice}`);
+            $("#staticBTCPrice").html(`$${formattedStaticPrice}`);
+          //  $("#totalBalance").html(`$${formattedTotalBalance}`);
+           // $('#dynamic_account_balance').val(`${formattedTotalBalance.toLocaleString()}`)
+            $('#dynamic_btc_price').val(`${formattedStaticPrice.toLocaleString()}`);
+            $("#btcChange").html(`<span class="${percentageChange >= 0 ? 'green' : 'red'}">${formattedChange}%</span>`);
+        }
+
+        // Fetch BTC price on page load and update every 10 seconds
+        fetchBTCPrice();
+        setInterval(fetchBTCPrice, 10000);
+
+
+
+
+    })
+</script>
 </body>
 
 </html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Crypto Prices & Balance Update</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .crypto-box, .balance-box {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 10px;
+        }
+        .green { color: green; }
+        .red { color: red; }
+    </style>
+</head>
+<body>
+
+    <h2>Live Crypto Prices & Balance Updates</h2>
+
+    <div class="balance-box">💰 Total Account Balance: <span id="totalBalance">$100,000</span></div>
+
+    <div class="crypto-box">🔥 BTC Price: <span id="liveBTC">$50,000</span></div>
+    <div class="crypto-box">📉 Static BTC Price: <span id="staticBTC">$50,000</span></div>
+
+    <div class="crypto-box">🔥 ETH Price: <span id="liveETH">$3,000</span></div>
+    <div class="crypto-box">📉 Static ETH Price: <span id="staticETH">$3,000</span></div>
+
+    <div class="crypto-box">🔥 DOGE Price: <span id="liveDOGE">$0.075</span></div>
+    <div class="crypto-box">📉 Static DOGE Price: <span id="staticDOGE">$0.075</span></div>
+
+    <div class="crypto-box">🔥 USDT Price: <span id="liveUSDT">$1.00</span></div>
+    <div class="crypto-box">📉 Static USDT Price: <span id="staticUSDT">$1.00</span></div>
+
+    <script>
+        let staticPrices = {
+            btc: 50000,
+            eth: 3000,
+            doge: 0.075,
+            usdt: 1.00
+        };
+        let totalBalance = 100000;
+        let lastPrices = {};
+
+        function fetchCryptoPrices() {
+            $.ajax({
+                url: 'https://api.coingecko.com/api/v3/simple/price',
+                type: 'GET',
+                data: {
+                    ids: 'bitcoin,ethereum,dogecoin,tether',
+                    vs_currencies: 'usd',
+                    include_24hr_change: 'true'
+                },
+                success: function(response) {
+                    updatePriceUI('btc', response.bitcoin);
+                    updatePriceUI('eth', response.ethereum);
+                    updatePriceUI('doge', response.dogecoin);
+                    updatePriceUI('usdt', response.tether);
+                },
+                error: function() {
+                    console.error("Error fetching crypto prices");
+                }
+            });
+        }
+
+        function updatePriceUI(crypto, data) {
+            let livePrice = parseFloat(data.usd);
+            let priceChange = lastPrices[crypto] ? (livePrice - lastPrices[crypto]) : 0;
+            let percentageChange = lastPrices[crypto] ? ((priceChange / lastPrices[crypto]) * 100) : 0;
+            let formattedLivePrice = livePrice.toLocaleString("en-US", { minimumFractionDigits: 2 });
+
+            $(`#live${crypto.toUpperCase()}`).html(`$${formattedLivePrice}`);
+
+            if (lastPrices[crypto] !== undefined) {
+                staticPrices[crypto] *= (1 + (percentageChange / 100));
+                totalBalance *= (1 + (percentageChange / 100));
+            }
+
+            lastPrices[crypto] = livePrice;
+
+            let formattedStaticPrice = staticPrices[crypto].toLocaleString("en-US", { minimumFractionDigits: 2 });
+            let formattedTotalBalance = totalBalance.toLocaleString("en-US", { minimumFractionDigits: 2 });
+
+            $(`#static${crypto.toUpperCase()}`).html(`$${formattedStaticPrice}`);
+            $("#totalBalance").html(`$${formattedTotalBalance}`);
+        }
+
+        fetchCryptoPrices();
+        setInterval(fetchCryptoPrices, 5000);
+    </script>
+
+</body>
+</html>

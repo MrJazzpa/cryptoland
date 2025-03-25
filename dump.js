@@ -324,3 +324,112 @@ if(!token){
     
         
     }
+
+
+
+         await verify_model.findOne({email:email,code:get_code},{code:get_code})
+         .then(async() =>{
+            const updated = await verify_model.findOneAndUpdate({email:email},{verification_status:"verified"});
+            if(updated){
+                res.status(200).json({data:"success",status:200});
+            }else{
+                res.status(200).json({error:"could not updated"});
+            }
+         
+    
+         }).catch(err=>{
+               res.status(400).json({error:err.message})
+         })
+
+
+
+
+
+
+
+
+         const  check_code = await verify_model.findOne({email:email,code:get_code},{code:1})
+                     if(check_code){
+                         const updated = await  verify_model.updateOne({_id:check_code._id},{verification_status:"verified"})
+                         if(updated){
+                            const update_user = await Users.updateOne({email:email},{verification_status:"verified"})
+                             if(update_user){
+                                 res.json({success:"user has been updates", status:200})
+                             }else{
+                                 res.status(403).json({error:"could not update users"})
+                             }
+                         }else{
+                            res.status(403).json({error:"could not update"})
+                         }
+                     }else{
+                         res.status(403).json({message:"code not found"});
+                     }
+
+
+
+
+
+
+/////// sign in code
+
+                      try{
+                                 const user = await Users.findOne({email:email});
+                                 if(!user){
+                                     return res.status(400).json({error:"User not found",status:400});
+                                 }else{
+                                     const isMatch = await bcrypt.compare(password,user.password);
+                                     if(!isMatch){
+                                         return res.status(400).json({error:"Invalid Credentials",status:400});
+                                     }else{
+                                         const token = jwt.sign({id:user._id},process.env.ACCESS_TOKEN_SECRET,{expiresIn:"1h"});
+                                         return res.status(200).json({token,status:200})
+                                     }
+                                 }
+                           }catch(err){
+                               return res.status(400).json({error:err.message})
+                           }
+
+
+
+
+                           const Id= req.user.id;
+                           try{
+                                const getuser = await User.findOne({_id:Id});
+                                if(getuser){
+                                   res.render("dashboard/index",{locals,getuser});
+                                  // res.status(200).json({data:getuser})
+                                }else{
+                                   res.status(400).json({error:"could not find user"});
+                                }
+                           }catch(err){
+                              res.status(400).json({error:err.message})
+                           }
+
+
+
+
+
+
+
+     const check_user = await account_model.findOne({userid:userId})
+      if(check_user.userid!=""){
+           const update = await account_model.updateOne({userid:userId},{Btc_Amount:btc_price,Ethereum_Amount:eth_price,Doge_Amount:doge_price,Usdt_Amount:usdt_price,Total_Balance:total})
+           if(update){
+            res.json({success:"successfull",status:200});
+           }
+      }else{
+        await account_model.create({userid:userId,Btc_Amount:btc_price,Ethereum_Amount:eth_price,Doge_Amount:doge_price,Usdt_Amount:usdt_price,Total_Balance:total})
+       .then(result=>{
+        if(result){
+           res.json({success:"successfull",status:200});
+        }else{
+           res.json({success:"failed",status:401});
+        }
+     }).catch(err=>{
+           res.status(400).json({error:err.message});
+     })
+      }
+
+
+
+     

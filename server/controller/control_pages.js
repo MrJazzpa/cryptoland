@@ -1,4 +1,5 @@
 const User = require('../models/signup_model');
+const account_model=require('../models/account_model');
 
 exports.homepage = async(req, res) =>{
     req.session.user = "Helo";
@@ -73,8 +74,17 @@ exports.reset_password= async(req,res) =>{
 }
 
 
-
-
+ const create_balance = (async function(userid){
+    const get_userId = userid
+    const find_user =  await account_model.findOne({userid:get_userId})
+    if( find_user === null ){
+       const  create_acct_balance =await account_model.create({ userid:get_userId,Total_Balance:"0"})
+       if(create_acct_balance){
+           console.log("balance created");
+       }
+    }
+ })
+ 
 //dashboard
 exports.dashboard = async(req,res)=>{
     const locals ={
@@ -84,7 +94,8 @@ exports.dashboard = async(req,res)=>{
     try{
          const getuser = await User.findOne({_id:Id});
          if(getuser){
-            res.render("dashboard/index",{locals,getuser});
+                create_balance(Id);
+             res.render("dashboard/index",{locals,getuser});
          }else{
             res.status(400).json({error:"could not find user"});
          }
@@ -93,12 +104,7 @@ exports.dashboard = async(req,res)=>{
     }
   // 
 }
- const get_user_id= async function(req,res,Id, next){
-    const user_id = Id;
-    const newuser= await User.findOne({_id:id})
-     req.newUser = newuser
-     
- }
+
 exports.investmentPlans= async(req,res)=>{
     locals={
         title:"investment Plans"
@@ -114,6 +120,33 @@ exports.investmentPlans= async(req,res)=>{
     }catch(err){
        res.status(400).json({error:err.message})
     }
+}
+exports.wallet = async(req,res)=>{
+    locals={
+        title:"investment Plans"
+    }
+    const Id= req.user.id;
+    try{
+        
+         const getuser = await User.findOne({_id:Id});
+         if(getuser){
+              await account_model.findOne({userid:getuser._id})
+              .then(get_balance=>{
+                    res.render("dashboard/wallet",{locals,getuser,get_balance});
+              }).catch(err=>{
+                    console.log(err.message);
+              })
+           
+         }else{
+            res.status(400).json({error:"could not find user"});
+         }
+    }catch(err){
+       res.status(400).json({error:err.message})
+    }
+
+}
+exports.test=async(req,res)=>{
+    res.render("dashboard/text");
 }
 exports.logout = async(req,res)=>{
     res.clearCookie("jwt");
