@@ -20,7 +20,7 @@ router.get('/status',api_controller.status);
 router.get ('/dashboard',verify_ejs_token,control_pages.dashboard)
 router.get('/investments',verify_ejs_token,control_pages.investmentPlans)
 router.get('/wallet',verify_ejs_token,control_pages.wallet)
-router.get('/test',control_pages.test)
+router.get('/transaction_history',verify_ejs_token,control_pages.transaction_history)
 router.get('/logout',control_pages.logout);
  
 module.exports = router;

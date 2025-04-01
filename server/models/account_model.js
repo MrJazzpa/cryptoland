@@ -30,7 +30,13 @@ const accountSchema = new Schema({
         type:String,
         require:false,
         default:"0"
+    },
+    Deposit_Balance:{
+        type:String,
+        require:false,
+        default:"0"
     }
+
 
 
     

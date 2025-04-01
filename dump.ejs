@@ -1,0 +1,71 @@
+<div class="container ">
+								
+    <!-- Search and Filter Section -->
+    <div class="d-flex justify-content-between mb-3">
+        <input type="text" class="form-control w-50" id="searchInput" placeholder="Search transactions...">
+        <select class="form-select w-25" id="statusFilter">
+            <option value="">All Status</option>
+            <option value="Success">Success</option>
+            <option value="Pending">Pending</option>
+            <option value="Failed">Failed</option>
+        </select>
+    </div>
+
+    <!-- Transactions Table -->
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-dark text-white table_hover">
+                <tr>
+                    
+                    
+                    <th>Amount</th>
+                    <th>Reciept</th>
+                    <th>Deposit Method</th>
+                    <th>Crypto Coin</th>
+                    <th>Crypto Amount</th>
+                    <th>Date</th>
+                    <th>Status</th>
+
+                </tr>
+            </thead>
+            <tbody id="transactionTable">
+                <% transaction_history.forEach(function(transaction, index){ %>
+                    <tr>
+                        
+                        <td  class="rttd">$<%= transaction.amount.toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') %></td>
+                        <td class="rttd"><%= transaction.receipt %></td>
+                        <td class="rttd"><%= transaction.deposit_type %></td>
+                        <td class="rttd"><% if (transaction.crypto_coin=="No Crypto") { %>
+                              <p> <%=transaction.crypto_coin %></p>
+                        <% }else if(transaction.crypto_coin=="BTC"){ %>
+                             <i class="fa-brands fa-bitcoin text-warning"><span style="color:#333"><%= " "+transaction.crypto_coin.toLowerCase() %></span></i>
+                      <% } else if(transaction.crypto_coin=="ETH"){ %>
+                            <i class="fa-brands fa-bitcoin text-warning"><%= transaction.crypto_coin %></i>
+                      <% }else if(transaction.crypto_coin=="USDT"){ %>
+                        <i class="fa-brands fa-bitcoin text-warning"><%= transaction.crypto_coin %></i>
+                      <% }else if(transaction.crypto_coin=="DOGE"){%>
+                        <i class="fa-brands fa-bitcoin text-warning"><%= transaction.crypto_coin %></i>	
+                        <% }  %>
+                    </td>
+                        <td  class="rttd"><%= transaction.crypto_amount %></td>
+                        <td  class="rttd"><%= transaction.date %></td>
+                        <td  class="rttd">
+                             <% if (transaction.status=="pending") { %>
+
+                                   <span class="badge btn btn-outline-warning text-warning status_success"><%= transaction.status %></span>
+                                    <span class="badge btn btn-outline-secondary text-warning status_hover view_trans "  data-bs-toggle="modal" data-bs-target="#view_transaction" data-index="<%= index %>" ><i class="fa-solid fa-eye" ></i></span>
+                                    <input type="hidden" name="trnxID" class="trnxID_pending" value="<%= transaction.transactionId %>">
+
+                             <% } else if(transaction.status=="success"){ %>
+                                <span class="badge btn btn-outline-success text-success status_hover" ><%= transaction.status %></span>
+                                <span class="badge btn btn-outline-secondary text-success status_hover view_trans"  data-bs-toggle="modal" data-bs-target="#view_transaction" data-index="<%= index %>"><i class="fa-solid fa-eye"></i></span>
+                                <input type="hidden" name="trnxID" class="trnxID_pending" value="<%= transaction.transactionId %>">
+
+                             <% } %>			
+                        </td>
+                    </tr>
+                       
+                <% }) %>
+        </table>
+    </div>
+</div>

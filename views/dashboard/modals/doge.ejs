@@ -1,0 +1,46 @@
+<!-- Modal DOGE -->
+<div class="modal fade" id="DogeModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                aria-label="Close"></button>
+        </div>
+        <form id="doge_form">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="">Amount</label>
+                        <input type="number" class="form-control placeinput" id="btc_amount" name="btc_amount"
+                            placeholder="5000" required>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="">Amount in BTC</label>
+                        <input type="number" class="form-control placeinput" id="amount_in_btc" name="amount_in_btc"
+                            placeholder="0.02345" readonly>
+                    </div>
+                    <div class="col-md-12">
+                        <label for=""> send BTC to the wallet address Bellow</label>
+                        <input type="text" class="form-control placeinput" id="btc_wallet_address"
+                            value="x34rtycfy78hjmlqwxflgkhp0yu" readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <span id="btc_copyMsg" style="display: none; color: green;">Copied!</span>
+                        <button type="button" class="btn btn-outline-success change_hover_success"
+                            id="btc_copy_btn">Copy Wallet Address</button>
+                    </div>
+                    <input type="hidden" id="deposit_type" name="deposit_type" value="Crypto">
+                    <input type="hidden" id="deposit_coin" name="deposit_coin" value="BTC">
+                    <input type="hidden" id="userid" name="userid" value="<%= getuser._id %>">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary">Pay From Deposited Balance</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+</div><!-- End of Moldal-->

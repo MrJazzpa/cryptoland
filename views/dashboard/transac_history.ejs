@@ -1,0 +1,225 @@
+<%- include('template/header') %>
+	<%- include('template/sidebar') %>
+		<%- include('template/header_main') %>
+			<main class="content">
+				<div class="container-fluid p-0">
+
+					<h1 class="h3 mb-3">Transaction History</h1>
+
+					<div class="row" >
+						<div class="col-12">
+							<div class="card">
+								
+								<div class="card-body" >
+									<% transaction_history.forEach(function(transaction, index){ %>
+
+										<div class="col-md-12">
+											<div class="card">
+
+												<div class="card-body">
+													<div class="row">
+														 <% if (transaction.deposit_type=="Deposit") { %>
+															<div class="col mt-0">
+																<span class="card-title">Transaction Type: <%= transaction.deposit_type %></span>
+															</div>
+														 <% }else if(transaction.deposit_type=="Crypto"){%>
+
+															<div class="col mt-0">
+																<span class="card-title">Transaction Type: <%= transaction.deposit_type %></span>
+															</div>
+															<% } %>
+															
+														<div class="col-auto">
+															<% if (transaction.status=="pending") { %>
+																<div class="stat text-primary"
+																style="background-color:orange;">
+																<div class="inputgroup">
+																	<input type="hidden" name="trnxID" class="trnxID_pending" value="<%= transaction.transactionId %>">
+																</div>
+																<a  class="view_trans" data-bs-toggle="modal" data-bs-target="#view_transaction" target-index="<%= index %>" ><i class="align-middle fa-solid fa-eye" style="color: white;"></i></a>
+															</div>
+															<% }else if(transaction.status=="success"){ %>
+
+																<div class="stat text-primary"
+																style="background-color:forestgreen;">
+																<div class="inputgroup">
+																	<input type="hidden" name="trnxID" class="trnxID_pending" value="<%= transaction.transactionId %>">
+																</div>
+																<a data-bs-toggle="modal" class="view_trans" data-bs-target="#view_transaction"><i class="align-middle fa-solid fa-eye" style="color: white;"></i></a>
+															</div>
+
+															<% } %>
+														</div>
+													</div>
+													<h6 class="mt-1 mb-3" id="totalBalance">Amount: $<%= transaction.amount.toLocaleString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') %></h6>
+													
+
+													 <% if (transaction.status=="pending") { %>
+														<span class="mt-1 mb-3 text-warning" id="totalBalance_current"><span style="color:#333">Transaction Status:</span> <%= transaction.status %></span>
+													 <% }else if(transaction.status=="success"){ %>
+
+														<span class="mt-1 mb-3 text-success" id="totalBalance_current"> <span style="color:#333">Transaction Status:</span> <%= transaction.status %></span>
+
+														<% } %>
+													
+												
+													<div class="mb-0">
+														<span class="text-danger">
+															<i class="mdi mdi-arrow-bottom-right" id=""></i>
+														</span><br>
+														<span class="" style="color:#333">Date: <%= transaction.date %></span>
+													</div>
+												</div>
+
+											</div>
+
+										</div>
+									<% }) %>
+								</div>
+							</div>
+						</div>
+
+
+						
+					</div>
+                   
+				</div>
+				<%- include('modals/view_transaction') %>
+			</main>
+			<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+			<script>
+				// Simple Search Functionality
+				document.getElementById("searchInput").addEventListener("keyup", function () {
+					let filter = this.value.toLowerCase();
+					let rows = document.querySelectorAll("#transactionTable tr");
+					
+					rows.forEach(row => {
+						let text = row.innerText.toLowerCase();
+						row.style.display = text.includes(filter) ? "" : "none";
+					});
+				});
+		
+				// Simple Filter by Status
+				document.getElementById("statusFilter").addEventListener("change", function () {
+					let filter = this.value.toLowerCase();
+					let rows = document.querySelectorAll("#transactionTable tr");
+		
+					rows.forEach(row => {
+						let status = row.querySelector("td:last-child span").innerText.toLowerCase();
+						row.style.display = (filter === "" || status === filter) ? "" : "none";
+					});
+				});
+			</script>
+			
+			<%- include('template/footer') %>
+			<script>
+				$(document).ready(function(){
+					function closeModal() {
+						$("#trans_table tbody").empty(); // Clears table rows
+						$("#view_transaction").hide();
+					}
+					closeModal()
+					let trnxID = [];
+				  $('.view_trans').on('click',function(e){
+					
+					let trnxID = $(this).closest('.inputgroup').find(".trnxID_pending").val();
+
+					// // Get value from input in the same row
+					alert(trnxID)
+					 //
+					$.ajax({
+						   url:`http://localhost:5000/api/get_transaction_history/${trnxID}`,
+						   type:"GET",
+						   success:function(data){
+							 if(data.status=200){
+								  let tableBody = "";
+								  data.dataResult.forEach(transaction=>{
+									if(transaction.deposit_type=="Deposit"){
+
+
+										tableBody += `
+									<tr >
+										<td  >Amount:</td>
+										<td style='text-align:right;'>${transaction.amount}</td>
+										
+									</tr>
+                                    <tr >
+										<td>Type:</td>
+										<td style='text-align:right;'>${transaction.deposit_type}</td>
+										
+									</tr>
+									<tr >
+										<td>Status:</td>
+										<td style='text-align:right;'>${transaction.status}</td>
+										
+									</tr>
+									<tr >
+										<td>Date:</td>
+										<td style='text-align:right;'>${transaction.date}</td>
+										
+									</tr>
+									<tr>
+										<td>Transaction ID:</td>
+										<td>${transaction.transactionId}</td>
+										
+									</tr>
+									
+							      `;
+
+									}else{
+												
+											tableBody += `
+											  <div class='row'>
+												<div class='col-md-12' >
+												<tr >
+												  
+													<td >Amount:</td>
+													<td style='text-align:right;'>${transaction.amount}</td>
+													
+													
+												</tr>
+												</div>
+												<tr >
+													<td>Type:</td>
+													<td style='text-align:right;'>${transaction.deposit_type}</td>
+													
+												</tr>
+												<tr >
+													<td>Crpto:</td>
+													<td style='text-align:right;'>${transaction.crypto_coin}</td>
+													
+												</tr>
+												<tr >
+													<td>${transaction.crypto_coin} Amount:</td>
+													<td style='text-align:right;'>${transaction.crypto_amount}</td>
+													
+												</tr>
+												<tr >
+													<td>Status:</td>
+													<td style='text-align:right;'>${transaction.status}</td>
+													
+												</tr>
+												<tr >
+													<td>Date:</td>
+													<td style='text-align:right;'>${transaction.date}</td>
+													
+												</tr>
+												<tr>
+													<td>Transaction ID:</td>
+													<td>${transaction.transactionId}</td>
+													
+												</tr>
+												</div>
+											`;
+									}
+									
+								  });
+								  $("#trans_table tbody").html(tableBody); // Append new data
+								  $("#view_transaction").show(); 
+							 }
+						   }
+					  })
+				  })
+				 
+				})
+			</script>

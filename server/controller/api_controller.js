@@ -6,6 +6,7 @@ const verify_model = require('../models/verificationCode_model');
 const account_model = require('../models/account_model');
 const deposite_model =require('../models/depositedMoney_model');
 const transaction_history_model = require('../models/transaction_history_model');
+const { json } = require('express');
 //post requests
 const sendmail = async function(from,to,subject,text){
     const mailOptions ={
@@ -284,12 +285,23 @@ exports.post_signup = async(req, res) =>{
        const Ethereum_Amount = parseFloat(req.body.Ethereum_Amount);
        const Doge_Amount = parseFloat(req.body.Doge_Amount);
        const Usdt_Amount = parseFloat(req.body.Usdt_Amount);
-       const add_balance = Btc_Amount+Ethereum_Amount+Doge_Amount+Usdt_Amount
+      // const add_balance = Btc_Amount+Ethereum_Amount+Doge_Amount+Usdt_Amount
        try{
-             const get_balance = await account_model.findOne({userid:userid},{Total_Balance:1});
+             const get_balance = await account_model.findOne({userid:userid});
                const initialBalance = parseFloat(get_balance.Total_Balance);
-               const Total_Balance = add_balance+initialBalance;
-               const update_account= await account_model.updateOne({userid:userid},{Btc_Amount:Btc_Amount,Ethereum_Amount:Ethereum_Amount,Doge_Amount:Doge_Amount,Usdt_Amount:Usdt_Amount,Total_Balance:Total_Balance.toLocaleString('en-Us',{minimumFractionDigits:2})})
+               const initBtc = parseFloat(get_balance.Btc_Amount);
+               const initEth =parseFloat(get_balance.Ethereum_Amount);
+               const initUsdt = parseFloat(get_balance.Usdt_Amount);
+               const initDoge = parseFloat(get_balance.Doge_Amount);
+                const finalbtc= Btc_Amount+initBtc;
+                const finaleth = Ethereum_Amount+initEth;
+                const finaldoge = Doge_Amount+initDoge;
+                const finalusdt = Usdt_Amount+initUsdt
+                 const finaltotal = finalbtc+finaleth+finaldoge+finalusdt
+                const Total_Balance = finaltotal+initialBalance;
+                //const maintotal =finaltotal+Total_Balance
+                
+               const update_account= await account_model.updateOne({userid:userid},{Btc_Amount:finalbtc.toLocaleString('en-Us',{minimumFractionDigits:2}),Ethereum_Amount:finaleth.toLocaleString('en-Us',{minimumFractionDigits:2}),Doge_Amount:finaldoge.toLocaleString('en-Us',{minimumFractionDigits:2}),Usdt_Amount:finalusdt.toLocaleString('en-Us',{minimumFractionDigits:2}),Total_Balance:Total_Balance.toLocaleString('en-Us',{minimumFractionDigits:2})})
                 if(update_account){
                     res.json({success:"updated",status:200})
                 }else{
@@ -302,14 +314,16 @@ exports.post_signup = async(req, res) =>{
        }
  
   }
-
+   function generateRandomString(length){
+    const chars = process.env.TRANSACTION_TOKEN
+    let result = "";
+    for (let i = 0; i < length; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result
+   }
   exports.transaction_history = async(req,res)=>{
-    let length=35;
-     const chars = process.env.TRANSACTION_TOKEN
-     let result = "";
-     for (let i = 0; i < length; i++) {
-         result += chars.charAt(Math.floor(Math.random() * chars.length));
-     }
+         const result =generateRandomString(25)
      try{
         const userid = req.body.UserId;
         const amount = req.body.Amount;
@@ -322,6 +336,42 @@ exports.post_signup = async(req, res) =>{
      }catch(err){
         res.json({error:err.message})
      }
-      
+
+  }
+
+  exports.deposit_btc = async(req,res)=>{
+      const amount = req.body.Amount;
+      const btc_amount = req.body.Btc_Amount;
+      const Deposit_type = req.body.Deposit_type
+      const Deposit_Crypto_Coin = req.body.Deposit_Crypto_Coin;
+      const userid = req.body.Userid;
+      console.log(userid)
+       const result=generateRandomString(25)
+       try{
+        const deposit = await transaction_history_model.create({userid:userid,transactionId:result,amount:amount,deposit_type:Deposit_type,crypto_coin:Deposit_Crypto_Coin,crypto_amount:btc_amount})
+        if(deposit){
+            res.json({message:"success",status:200});
+        }else{
+             res.json({message:"Could not insert deposit"});
+        }
+       
+       }catch(err){
+          res,json({error:err.message})
+       }
+
      
+  }
+
+
+  //GET Methods
+
+  exports.Get_trans_history = async(req,res)=>{
+      const get_trnx_id = req.params.trnxID
+       try{
+        const result= await transaction_history_model.find({transactionId:get_trnx_id})
+        res.json({dataResult:result,status:200});
+       }catch(err){
+        res.json({error:err.message})
+       }
+       
   }

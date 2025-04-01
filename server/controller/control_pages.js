@@ -1,5 +1,6 @@
 const User = require('../models/signup_model');
 const account_model=require('../models/account_model');
+const transaction_history_model = require('../models/transaction_history_model');
 
 exports.homepage = async(req, res) =>{
     req.session.user = "Helo";
@@ -145,8 +146,28 @@ exports.wallet = async(req,res)=>{
     }
 
 }
-exports.test=async(req,res)=>{
-    res.render("dashboard/text");
+exports.transaction_history=async(req,res)=>{
+    locals={
+        title:"Transaction History"
+    }
+    const Id= req.user.id;
+    try{
+        const getuser = await User.findOne({_id:Id});
+        if(getuser){
+            const transaction_history = await transaction_history_model.find({userid:Id});
+            res.render("dashboard/transac_history",
+                {
+                locals,
+                getuser,
+                transaction_history
+            });
+        }else{
+           res.status(400).json({error:"could not find user"});
+        }
+   }catch(err){
+      res.status(400).json({error:err.message})
+   }
+  
 }
 exports.logout = async(req,res)=>{
     res.clearCookie("jwt");
