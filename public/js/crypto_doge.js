@@ -66,9 +66,44 @@ function updateDOGEUI(livePrice, percentageChange, percentageChange24h) {
     $("#dogeChange24h").html(`<span class="${percentageChange24h >= 0 ? 'green' : 'red'}">${formatted24hChange}% (24h)</span>`);
     
 }
+let dogeRate = 0; // Global variable to store DOGE price in USD
+
+// Function to fetch the latest DOGE price from CoinGecko
+function fetchNewDOGEPrice() {
+    $.ajax({
+        url: "https://api.coingecko.com/api/v3/simple/price",
+        method: "GET",
+        data: {
+            ids: "dogecoin",
+            vs_currencies: "usd"
+        },
+        success: function (response) {
+            dogeRate = response.dogecoin.usd; // Update DOGE price
+            console.log("DOGE Price:", dogeRate);
+        },
+        error: function (error) {
+            console.error("Error fetching DOGE price:", error);
+        }
+    });
+}
+
+// Fetch DOGE price when the page loads
+fetchNewDOGEPrice();
+
+// Convert USD to DOGE on keyup event
+$("#doge_amount").on("keyup", function () {
+    let usdAmount = parseFloat($(this).val());
+    if (dogeRate > 0 && usdAmount > 0) {
+        let dogeValue = (usdAmount / dogeRate).toFixed(8);
+        $("#amount_in_doge").val(dogeValue);
+    } else {
+        $("#amount_in_doge").val(""); // Clear input if invalid
+    }
+});
+
 
 fetchDOGEPrice();
 
-setInterval(fetchDOGEPrice, 10000);
+setInterval(fetchDOGEPrice, fetchNewDOGEPrice, 10000);
 
 })

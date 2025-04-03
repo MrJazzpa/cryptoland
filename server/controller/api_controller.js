@@ -339,16 +339,16 @@ exports.post_signup = async(req, res) =>{
 
   }
 
-  exports.deposit_btc = async(req,res)=>{
+  exports.deposit_crypto = async(req,res)=>{
       const amount = req.body.Amount;
-      const btc_amount = req.body.Btc_Amount;
+      const crypto_amount = req.body.crypto_Amount;
       const Deposit_type = req.body.Deposit_type
       const Deposit_Crypto_Coin = req.body.Deposit_Crypto_Coin;
       const userid = req.body.Userid;
       console.log(userid)
        const result=generateRandomString(25)
        try{
-        const deposit = await transaction_history_model.create({userid:userid,transactionId:result,amount:amount,deposit_type:Deposit_type,crypto_coin:Deposit_Crypto_Coin,crypto_amount:btc_amount})
+        const deposit = await transaction_history_model.create({userid:userid,transactionId:result,amount:amount,deposit_type:Deposit_type,crypto_coin:Deposit_Crypto_Coin,crypto_amount:crypto_amount})
         if(deposit){
             res.json({message:"success",status:200});
         }else{

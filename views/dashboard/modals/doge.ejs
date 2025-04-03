@@ -13,26 +13,26 @@ aria-hidden="true">
                 <div class="row">
                     <div class="col-md-12">
                         <label for="">Amount</label>
-                        <input type="number" class="form-control placeinput" id="btc_amount" name="btc_amount"
+                        <input type="number" class="form-control placeinput" id="doge_amount" name="doge_amount"
                             placeholder="5000" required>
                     </div>
                     <div class="col-md-12">
-                        <label for="">Amount in BTC</label>
-                        <input type="number" class="form-control placeinput" id="amount_in_btc" name="amount_in_btc"
+                        <label for="">Amount in Doge</label>
+                        <input type="number" class="form-control placeinput" id="amount_in_doge" name="amount_in_doge"
                             placeholder="0.02345" readonly>
                     </div>
                     <div class="col-md-12">
                         <label for=""> send BTC to the wallet address Bellow</label>
-                        <input type="text" class="form-control placeinput" id="btc_wallet_address"
+                        <input type="text" class="form-control placeinput" id="doge_wallet_address"
                             value="x34rtycfy78hjmlqwxflgkhp0yu" readonly>
                     </div>
                     <div class="col-md-6">
-                        <span id="btc_copyMsg" style="display: none; color: green;">Copied!</span>
+                        <span id="doge_copyMsg" class="text-success"></span>
                         <button type="button" class="btn btn-outline-success change_hover_success"
-                            id="btc_copy_btn">Copy Wallet Address</button>
+                            id="doge_copy_btn">Copy Wallet Address</button>
                     </div>
                     <input type="hidden" id="deposit_type" name="deposit_type" value="Crypto">
-                    <input type="hidden" id="deposit_coin" name="deposit_coin" value="BTC">
+                    <input type="hidden" id="deposit_doge_coin" name="deposit_doge_coin" value="Doge">
                     <input type="hidden" id="userid" name="userid" value="<%= getuser._id %>">
                 </div>
             </div>
@@ -43,4 +43,30 @@ aria-hidden="true">
         </form>
     </div>
 </div>
+<script>
+    $('#doge_form').on('submit',function(e){
+        e.preventDefault();
+        let amount = $('#doge_amount').val();
+        let doge_amount = $('#amount_in_doge').val();
+        let deposit_type = $('#deposit_type').val();
+        let deposit_crypto_coin = $('#deposit_doge_coin').val();
+        userid =$('#userid').val();
+        //alert(amount+""+btc_amount+""+deposit_type+""+deposit_crypto_coin)
+        $.post('http://localhost:5000/api/deposit_crypto',
+            {
+            Amount:amount,
+            crypto_Amount:doge_amount,
+            Deposit_type:deposit_type,
+            Deposit_Crypto_Coin:deposit_crypto_coin,
+            Userid:userid
+        },
+        function(response){
+               if(response.status==200){
+                
+                  $('#successModal').modal('show');
+                  $('#DogeModal').modal('hide');
+               }
+        })
+    })
+</script>
 </div><!-- End of Moldal-->

@@ -16,7 +16,7 @@ router.post('/PasswordReset',api_controller.post_password_reset)
 router.post('/add_value',api_controller.addvalue);
 router.post('/update_account',api_controller.update_balance);
 router.post('/transaction_history',api_controller.transaction_history);
-router.post('/deposit_btc',api_controller.deposit_btc);
+router.post('/deposit_crypto',api_controller.deposit_crypto);
 
 
 //get methods

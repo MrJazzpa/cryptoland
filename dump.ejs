@@ -69,3 +69,30 @@
         </table>
     </div>
 </div>
+
+<script>
+     $('#btc_form').on('submit',function(e){
+        e.preventDefault();
+        let amount = $('#btc_amount').val();
+        let btc_amount = $('#amount_in_btc').val();
+        let deposit_type = $('#deposit_type').val();
+        let deposit_crypto_coin = $('#deposit_coin').val();
+        userid =$('#userid').val();
+        //alert(amount+""+btc_amount+""+deposit_type+""+deposit_crypto_coin)
+        $.post('http://localhost:5000/api/deposit_crypto',
+            {
+            Amount:amount,
+            crypto_Amount:btc_amount,
+            Deposit_type:deposit_type,
+            Deposit_Crypto_Coin:deposit_crypto_coin,
+            Userid:userid
+        },
+        function(response){
+               if(response.status==200){
+                
+                  $('#successModal').modal('show');
+                  $('#BtcModal').modal('hide');
+               }
+        })
+    })
+</script>

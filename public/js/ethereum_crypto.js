@@ -67,8 +67,50 @@ function updateETHUI(livePrice, percentageChange, percentageChange24h) {
     $("#ethChange24h").html(`<span class="${percentageChange24h >= 0 ? 'green' : 'red'}">${formatted24hChange}%</span>`);
 }
 
+
+
+let ethRate = 0; // Global variable to store ETH price
+
+// Function to fetch ETH price from CoinGecko
+function fetchnewETHPrice() {
+    $.ajax({
+        url: "https://api.coingecko.com/api/v3/simple/price",
+        method: "GET",
+        data: {
+            ids: "ethereum",
+            vs_currencies: "usd"
+        },
+        success: function (response) {
+            ethRate = response.ethereum.usd; // Get ETH price
+            console.log("ETH Price:", ethRate);
+        },
+        error: function (error) {
+            console.error("Error fetching ETH price:", error);
+        }
+    });
+}
+
+fetchnewETHPrice();
+
+// Convert USD to ETH on keypress
+$("#eth_amount").on("keyup", function () {
+    let usdAmount = parseFloat($(this).val());
+    if (ethRate > 0 && usdAmount > 0) {
+        let ethValue = (usdAmount / ethRate).toFixed(8);
+        $("#amount_in_eth").val(ethValue);
+    } else {
+        $("#amount_in_eth").val(""); // Clear input if invalid
+    }
+});
+
+
+
 // Fetch ETH price on page load and update every 10 seconds
 fetchETHPrice();
-setInterval(fetchETHPrice, 10000);
+// conerting from usd to eth
+
+setInterval(fetchETHPrice, fetchnewETHPrice, 10000);
 
 })
+
+

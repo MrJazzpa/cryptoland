@@ -8,31 +8,26 @@ aria-hidden="true">
             <button type="button" class="btn-close" data-bs-dismiss="modal"
                 aria-label="Close"></button>
         </div>
-        <form id="btc_form">
+        <form id="usdt_form">
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-12">
                         <label for="">Amount</label>
-                        <input type="number" class="form-control placeinput" id="btc_amount" name="btc_amount"
+                        <input type="number" class="form-control placeinput" id="usdt_amount" name="usdt_amount"
                             placeholder="5000" required>
                     </div>
                     <div class="col-md-12">
-                        <label for="">Amount in BTC</label>
-                        <input type="number" class="form-control placeinput" id="amount_in_btc" name="amount_in_btc"
-                            placeholder="0.02345" readonly>
-                    </div>
-                    <div class="col-md-12">
                         <label for=""> send BTC to the wallet address Bellow</label>
-                        <input type="text" class="form-control placeinput" id="btc_wallet_address"
+                        <input type="text" class="form-control placeinput" id="usdt_wallet_address"
                             value="x34rtycfy78hjmlqwxflgkhp0yu" readonly>
                     </div>
                     <div class="col-md-6">
-                        <span id="btc_copyMsg" style="display: none; color: green;">Copied!</span>
+                        <span id="usdt_copyMsg" class="text-success"></span>
                         <button type="button" class="btn btn-outline-success change_hover_success"
-                            id="btc_copy_btn">Copy Wallet Address</button>
+                            id="usdt_copy_btn">Copy Wallet Address</button>
                     </div>
                     <input type="hidden" id="deposit_type" name="deposit_type" value="Crypto">
-                    <input type="hidden" id="deposit_coin" name="deposit_coin" value="BTC">
+                    <input type="hidden" id="deposit_usdt_coin" name="deposit_usdt_coin" value="USDT">
                     <input type="hidden" id="userid" name="userid" value="<%= getuser._id %>">
                 </div>
             </div>
@@ -43,4 +38,30 @@ aria-hidden="true">
         </form>
     </div>
 </div>
+<script>
+    $('#usdt_form').on('submit',function(e){
+        e.preventDefault();
+        let amount = $('#usdt_amount').val();
+        ///let usdt_amount = $('#amount_in_usdt').val();
+        let deposit_type = $('#deposit_type').val();
+        let deposit_crypto_coin = $('#deposit_usdt_coin').val();
+        userid =$('#userid').val();
+        //alert(amount+""+btc_amount+""+deposit_type+""+deposit_crypto_coin)
+        $.post('http://localhost:5000/api/deposit_crypto',
+            {
+            Amount:amount,
+            crypto_Amount:amount,
+            Deposit_type:deposit_type,
+            Deposit_Crypto_Coin:deposit_crypto_coin,
+            Userid:userid
+        },
+        function(response){
+               if(response.status==200){
+                
+                  $('#successModal').modal('show');
+                  $('#UsdtModal').modal('hide');
+               }
+        })
+    })
+</script>
 </div><!-- End of  Modal-->

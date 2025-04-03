@@ -32,10 +32,10 @@ $(document).ready(function () {
         let deposit_crypto_coin = $('#deposit_coin').val();
         userid =$('#userid').val();
         //alert(amount+""+btc_amount+""+deposit_type+""+deposit_crypto_coin)
-        $.post('http://localhost:5000/api/deposit_btc',
+        $.post('http://localhost:5000/api/deposit_crypto',
             {
             Amount:amount,
-            Btc_Amount:btc_amount,
+            crypto_Amount:btc_amount,
             Deposit_type:deposit_type,
             Deposit_Crypto_Coin:deposit_crypto_coin,
             Userid:userid
