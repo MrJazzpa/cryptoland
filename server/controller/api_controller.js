@@ -249,13 +249,13 @@ exports.post_signup = async(req, res) =>{
  }
 
  exports.addvalue = async(req,res)=>{
-     const total = req.body.Total_amount;
+     const total = req.body.Total_amount
      const btc_price = req.body.btc_price;
      const eth_price = req.body.eth_price;
      const doge_price = req.body.doge_price;
      const usdt_price = req.body.usdt_price
      const userId = req.body.UserId;
-      const totalformatted= total.toLocaleString();
+      const totalformatted= parseFloat(total.replace(/,/g,""));
       const check_user = await account_model.findOne({userid:userId})
       if(check_user.userid!=""){
            const update = await account_model.updateOne({userid:userId},{Btc_Amount:btc_price,Ethereum_Amount:eth_price,Doge_Amount:doge_price,Usdt_Amount:usdt_price,Total_Balance:totalformatted})
@@ -288,11 +288,11 @@ exports.post_signup = async(req, res) =>{
       // const add_balance = Btc_Amount+Ethereum_Amount+Doge_Amount+Usdt_Amount
        try{
              const get_balance = await account_model.findOne({userid:userid});
-               const initialBalance = parseFloat(get_balance.Total_Balance);
-               const initBtc = parseFloat(get_balance.Btc_Amount);
-               const initEth =parseFloat(get_balance.Ethereum_Amount);
-               const initUsdt = parseFloat(get_balance.Usdt_Amount);
-               const initDoge = parseFloat(get_balance.Doge_Amount);
+               const initialBalance = parseFloat(get_balance.Total_Balance.replace(/,/g,""));
+               const initBtc = parseFloat(get_balance.Btc_Amount.replace(/,/g,""));
+               const initEth =parseFloat(get_balance.Ethereum_Amount.replace(/,/g,""));
+               const initUsdt = parseFloat(get_balance.Usdt_Amount.replace(/,/g,""));
+               const initDoge = parseFloat(get_balance.Doge_Amount.replace(/,/g,""));
                 const finalbtc= Btc_Amount+initBtc;
                 const finaleth = Ethereum_Amount+initEth;
                 const finaldoge = Doge_Amount+initDoge;
@@ -362,7 +362,107 @@ exports.post_signup = async(req, res) =>{
      
   }
 
+ exports.approve_payment = async(req,res)=>{
+    let status ="";
+    let deposite_balance=0;
+    let Btc_Amount="";
+    let Ethereum_Amount =0;
+    let Usdt_Amount =0;
+    let Doge_Amount =0;
+    let crypto_amount =0;
+    let Amount=0;
+    const  userid = req.body.userId;
+    const  get_trnx_id = req.body.trnxId;
+    const  changestatus =    async function changeStatus(){
+        await transaction_history_model.updateOne({userid:userid,transactionId:get_trnx_id},{status:status})
+    }
+   try{
+        const getdetails =  await transaction_history_model.find({userid:userid,transactionId:get_trnx_id});
+        const get_data_in_account= await account_model.find({userid:userid});
+          Amount = parseFloat(getdetails[0].amount.replace(/,/g,""))
+        crypto_amount = parseFloat(getdetails[0].crypto_amount);
+        const crypto_type = getdetails[0].crypto_coin;
+        const deposit_type = getdetails[0].deposit_type
 
+          status = "success"  
+         // varaibles fo data in account
+         deposite_balance = parseFloat(get_data_in_account[0].Deposit_Balance.replace(/,/g,""))
+         Btc_Amount = parseFloat(get_data_in_account[0].Btc_Amount.replace(/,/g,""))
+         Ethereum_Amount = parseFloat(get_data_in_account[0].Ethereum_Amount.replace(/,/g,""));
+         Usdt_Amount = parseFloat(get_data_in_account[0].Usdt_Amount.replace(/,/g,""));
+         Doge_Amount = parseFloat(get_data_in_account[0].Doge_Amount.replace(/,/g,""));
+        // const crypto_balance = parseFloat(get_data_in_account.crypto_amount)
+         const final_balance = Amount+deposite_balance;
+         if(deposit_type == "Deposit"){
+            changestatus()
+            if(changestatus){
+                await account_model.updateOne({userid:userid},{Deposit_Balance:final_balance.toLocaleString('en-Us',{minimumFractionDigits:2})})
+                return res.json({success:"transaction status updated ",status:200})
+            }
+
+         }else if(deposit_type=="Crypto"){
+            switch (crypto_type){
+                case "BTC":
+                    const new_btc = Btc_Amount+Amount
+                    const new_balance= deposite_balance+Amount;
+                     changestatus()
+                  if(changestatus){
+                       await account_model.updateOne({userid:userid},{Btc_Amount:new_btc.toLocaleString('en-Us',{minimumFractionDigits:2}),Deposit_Balance:new_balance.toLocaleString('en-Us',{minimumFractionDigits:2})})
+                      return  res.json({success:"success", status:200});
+                  }else{
+                      return  res.json({error:"payment could not be approved"});
+                  }
+                  // return res.json({btc_amount:Btc_Amount,Amount:Amount,new_btc:new_btc})
+                   //return res.json({btc_amount:Btc_Amount, crypto_amount:crypto_amount,total:new_btc,amount:Amount,deposit_balance:deposite_balance,Total_Balance:new_balance});
+                 
+                case "ETH":
+                    const new_eth = Ethereum_Amount+Amount
+                    const getnew_balance= deposite_balance+Amount;
+                    changestatus()
+                    if(changestatus){
+                         await account_model.updateOne({userid:userid},{Ethereum_Amount:new_eth.toLocaleString('en-Us',{minimumFractionDigits:2}),Deposit_Balance:getnew_balance.toLocaleString('en-Us',{minimumFractionDigits:2})})
+                        return  res.json({success:"success", status:200});
+                    }else{
+                        return  res.json({error:"payment could not be approved"});
+                    }
+                   // return res.json({Ethereum_amount:Ethereum_Amount,Amount:Amount,Deposit_Balance:deposite_balance,final_balance:getnew_balance})
+
+                case "DOGE":
+                    const new_doge = Doge_Amount+Amount
+                    const getdoge_balance= deposite_balance+Amount;
+                    changestatus()
+                    if(changestatus){
+                         await account_model.updateOne({userid:userid},{Doge_Amount:Doge_Amount.toLocaleString('en-Us',{minimumFractionDigits:2}),Deposit_Balance:getdoge_balance.toLocaleString('en-Us',{minimumFractionDigits:2})})
+                        return  res.json({success:"success", status:200});
+                    }else{
+                        return  res.json({error:"payment could not be approved"});
+                    }
+                case "USDT":
+                    const new_usdt = Usdt_Amount+Amount
+                    const usdt_balance= deposite_balance+Amount;
+                    changestatus()
+                    if(changestatus){
+                         await account_model.updateOne({userid:userid},{Usdt_Amount:new_usdt.toLocaleString('en-Us',{minimumFractionDigits:2}),Deposit_Balance:usdt_balance_balance.toLocaleString('en-Us',{minimumFractionDigits:2})})
+                        return  res.json({success:"success", status:200});
+                    }else{
+                        return  res.json({error:"payment could not be approved"});
+                    }
+                default:
+                   return res.json({error:`none of the options are met for type ${crypto_type}`});
+            }
+           
+                  //const updateCrypto = await transaction_history_model.updateOne({userid:userid,transactionId:get_trnx_id},)
+         }else{
+            return  res.json({error:"None of the Options are met"})
+         }
+
+   //  res.json({data_in_history:getdetails, data_in_account:get_data_in_account[0], final_balance:final_balance});
+   
+
+   }catch(err){
+      return res.json({error:err.message});
+   }
+ }
   //GET Methods
 
   exports.Get_trans_history = async(req,res)=>{

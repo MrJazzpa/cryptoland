@@ -95,4 +95,37 @@
                }
         })
     })
+
+
+
+    if(getdetails.deposit_type=="Deposit"){
+        
+        const get_data_in_account= await account_model.find({userid:userid});
+        const deposite_balance = parseFloat(get_data_in_account.Deposite_Balance)
+        const final_balance = Amount+deposite_balance;
+         const updateDeposite_Balance = await account_model.updateOne({userid:userid},{Deposit_Balance:final_balance})
+         if(updateDeposite_Balance){
+             await transaction_history_model.updateOne({userid:userid,transactionId:get_trnx_id},{status:status})
+             res.json({success:"Balance has been updated ",status:200})
+         }
+
+    }
+
+    changestatus()
+                   if(changestatus){
+                        await account_model.updateOne({userid:userid},{Btc_Amount:new_btc,Deposit_Balance:new_balance})
+                       return  res.json({success:"success", status:200});
+                   }else{
+                       return  res.json({error:"payment could not be approved"});
+                   }
+
+                   changestatus()
+                  if(changestatus){
+                       await account_model.updateOne({userid:userid},{Btc_Amount:new_btc,Deposit_Balance:new_balance})
+                      return  res.json({success:"success", status:200});
+                  }else{
+                      return  res.json({error:"payment could not be approved"});
+                  }
 </script>
+
+

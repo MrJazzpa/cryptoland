@@ -31,7 +31,7 @@
 															</div>
 														</div>
 														<h1 class="mt-1 mb-3" id="totalBalance">$<%=
-																get_balance.Total_Balance %>
+																get_balance.Total_Balance.toLocaleString('en-Us',{minimumFractionDigits:2}) %>
 														</h1>
 														<h1 class="mt-1 mb-3" id="totalBalance_current"></h1>
 														<input type="hidden" id="static_account_balance"
@@ -67,7 +67,7 @@
 															</div>
 														</div>
 														<h1 class="mt-1 mb-3" id="totalBalance">$<%=
-																get_balance.Total_Balance %>
+																get_balance.Deposit_Balance.toLocaleString('en-Us',{minimumFractionDigits:2}) %>
 														</h1>
 														<h1 class="mt-1 mb-3" id="totalBalance_current"></h1>
 														<input type="hidden" id="static_account_balance"
