@@ -6,6 +6,7 @@ const verify_model = require('../models/verificationCode_model');
 const account_model = require('../models/account_model');
 const deposite_model =require('../models/depositedMoney_model');
 const transaction_history_model = require('../models/transaction_history_model');
+const investment_model = require('../models/InvestmentPlans_model');
 const { json } = require('express');
 //post requests
 const sendmail = async function(from,to,subject,text){
@@ -288,6 +289,7 @@ exports.post_signup = async(req, res) =>{
       // const add_balance = Btc_Amount+Ethereum_Amount+Doge_Amount+Usdt_Amount
        try{
              const get_balance = await account_model.findOne({userid:userid});
+              
                const initialBalance = parseFloat(get_balance.Total_Balance.replace(/,/g,""));
                const initBtc = parseFloat(get_balance.Btc_Amount.replace(/,/g,""));
                const initEth =parseFloat(get_balance.Ethereum_Amount.replace(/,/g,""));
@@ -300,10 +302,16 @@ exports.post_signup = async(req, res) =>{
                  const finaltotal = finalbtc+finaleth+finaldoge+finalusdt
                 const Total_Balance = finaltotal+initialBalance;
                 //const maintotal =finaltotal+Total_Balance
-                
+                 
                const update_account= await account_model.updateOne({userid:userid},{Btc_Amount:finalbtc.toLocaleString('en-Us',{minimumFractionDigits:2}),Ethereum_Amount:finaleth.toLocaleString('en-Us',{minimumFractionDigits:2}),Doge_Amount:finaldoge.toLocaleString('en-Us',{minimumFractionDigits:2}),Usdt_Amount:finalusdt.toLocaleString('en-Us',{minimumFractionDigits:2}),Total_Balance:Total_Balance.toLocaleString('en-Us',{minimumFractionDigits:2})})
                 if(update_account){
+
+                    const getemail = await Users.findOne({_id:userid},{email:1})
+                    const text = `$${Total_Balance.toLocaleString('en-us',{minimumFractionDigits:2})} has been deposited to your Wallet\n\n Thanks For Your Smart Investment Choice`
+                     const subject= "CREDIT"
+                    sendmail(process.env.EMAIL,getemail,subject,text);
                     res.json({success:"updated",status:200})
+                   
                 }else{
                     res.json({error:"could not update"})
                 }
@@ -371,17 +379,25 @@ exports.post_signup = async(req, res) =>{
     let Doge_Amount =0;
     let crypto_amount =0;
     let Amount=0;
-    const  userid = req.body.userId;
-    const  get_trnx_id = req.body.trnxId;
-    const  changestatus =    async function changeStatus(){
+    let crypto_type="";
+    let  userid = req.body.userId;
+    let  get_trnx_id = req.body.trnxId;
+    let getdetails="";
+    let  changestatus =    async function changeStatus(){
         await transaction_history_model.updateOne({userid:userid,transactionId:get_trnx_id},{status:status})
     }
+    const SendMail = async function(){
+        const getemail = await Users.findOne({_id:userid},{email:1})
+        const text = `$${getdetails[0].amount.toLocaleString('en-Us',{minimumFractionDigits:2})} Worth of ${crypto_type} has been deposited to your Wallet\n\n Thanks For Your Smart Investment Choice`
+        const subject=`${crypto_type} CREDIT`
+        sendmail(process.env.EMAIL,getemail,subject,text);
+    }
    try{
-        const getdetails =  await transaction_history_model.find({userid:userid,transactionId:get_trnx_id});
+         getdetails =  await transaction_history_model.find({userid:userid,transactionId:get_trnx_id});
         const get_data_in_account= await account_model.find({userid:userid});
           Amount = parseFloat(getdetails[0].amount.replace(/,/g,""))
         crypto_amount = parseFloat(getdetails[0].crypto_amount);
-        const crypto_type = getdetails[0].crypto_coin;
+         crypto_type = getdetails[0].crypto_coin;
         const deposit_type = getdetails[0].deposit_type
 
           status = "success"  
@@ -397,6 +413,10 @@ exports.post_signup = async(req, res) =>{
             changestatus()
             if(changestatus){
                 await account_model.updateOne({userid:userid},{Deposit_Balance:final_balance.toLocaleString('en-Us',{minimumFractionDigits:2})})
+                const getemail = await Users.findOne({_id:userid},{email:1})
+                const text = `$${getdetails[0].amount.toLocaleString('en-us',{minimumFractionDigits:2})} has been deposited to your Wallet\n\n Thanks For Your Smart Investment Choice`
+                 const subject= "CREDIT"
+                sendmail(process.env.EMAIL,getemail,subject,text);
                 return res.json({success:"transaction status updated ",status:200})
             }
 
@@ -408,12 +428,12 @@ exports.post_signup = async(req, res) =>{
                      changestatus()
                   if(changestatus){
                        await account_model.updateOne({userid:userid},{Btc_Amount:new_btc.toLocaleString('en-Us',{minimumFractionDigits:2}),Deposit_Balance:new_balance.toLocaleString('en-Us',{minimumFractionDigits:2})})
+                       SendMail();
                       return  res.json({success:"success", status:200});
                   }else{
                       return  res.json({error:"payment could not be approved"});
                   }
-                  // return res.json({btc_amount:Btc_Amount,Amount:Amount,new_btc:new_btc})
-                   //return res.json({btc_amount:Btc_Amount, crypto_amount:crypto_amount,total:new_btc,amount:Amount,deposit_balance:deposite_balance,Total_Balance:new_balance});
+                 
                  
                 case "ETH":
                     const new_eth = Ethereum_Amount+Amount
@@ -421,7 +441,8 @@ exports.post_signup = async(req, res) =>{
                     changestatus()
                     if(changestatus){
                          await account_model.updateOne({userid:userid},{Ethereum_Amount:new_eth.toLocaleString('en-Us',{minimumFractionDigits:2}),Deposit_Balance:getnew_balance.toLocaleString('en-Us',{minimumFractionDigits:2})})
-                        return  res.json({success:"success", status:200});
+                         SendMail();
+                         return  res.json({success:"success", status:200});
                     }else{
                         return  res.json({error:"payment could not be approved"});
                     }
@@ -432,8 +453,9 @@ exports.post_signup = async(req, res) =>{
                     const getdoge_balance= deposite_balance+Amount;
                     changestatus()
                     if(changestatus){
-                         await account_model.updateOne({userid:userid},{Doge_Amount:Doge_Amount.toLocaleString('en-Us',{minimumFractionDigits:2}),Deposit_Balance:getdoge_balance.toLocaleString('en-Us',{minimumFractionDigits:2})})
-                        return  res.json({success:"success", status:200});
+                         await account_model.updateOne({userid:userid},{Doge_Amount:new_doge.toLocaleString('en-Us',{minimumFractionDigits:2}),Deposit_Balance:getdoge_balance.toLocaleString('en-Us',{minimumFractionDigits:2})})
+                         SendMail();
+                         return  res.json({success:"success", status:200});
                     }else{
                         return  res.json({error:"payment could not be approved"});
                     }
@@ -442,8 +464,9 @@ exports.post_signup = async(req, res) =>{
                     const usdt_balance= deposite_balance+Amount;
                     changestatus()
                     if(changestatus){
-                         await account_model.updateOne({userid:userid},{Usdt_Amount:new_usdt.toLocaleString('en-Us',{minimumFractionDigits:2}),Deposit_Balance:usdt_balance_balance.toLocaleString('en-Us',{minimumFractionDigits:2})})
-                        return  res.json({success:"success", status:200});
+                         await account_model.updateOne({userid:userid},{Usdt_Amount:new_usdt.toLocaleString('en-Us',{minimumFractionDigits:2}),Deposit_Balance:usdt_balance.toLocaleString('en-Us',{minimumFractionDigits:2})})
+                         SendMail();
+                         return  res.json({success:"success", status:200});
                     }else{
                         return  res.json({error:"payment could not be approved"});
                     }
@@ -451,7 +474,7 @@ exports.post_signup = async(req, res) =>{
                    return res.json({error:`none of the options are met for type ${crypto_type}`});
             }
            
-                  //const updateCrypto = await transaction_history_model.updateOne({userid:userid,transactionId:get_trnx_id},)
+                 
          }else{
             return  res.json({error:"None of the Options are met"})
          }
@@ -463,10 +486,92 @@ exports.post_signup = async(req, res) =>{
       return res.json({error:err.message});
    }
  }
+
+ exports.update_user_info = async(req,res)=>{
+        
+    const userid = req.body.Userid;
+    const phoneNumber = req.body.phoneNumber;
+    const country = req.body.Country;
+    const state = req.body.State;
+    const dob = req.body.DOB;
+    const address =req.body.Address;
+     try{
+
+          const update_info = await Users.updateOne({_id:userid},{phone_number:phoneNumber,country:country,state,state,dob:dob,address:address});
+          if(update_info){
+            res.json({message:"success",status:200})
+          }else{
+               res.json({error:"could not update Users"})
+          }
+     
+
+     }catch(err){
+        res.json({error:err.message});
+     }
+
+ }
+
+ exports.changepassword = async(req,res)=>{
+        const Oldpass = req.body.Oldpass;
+        const Newpass = req.body.Newpass;
+        const Compass = req.body.Compass;
+        const userid = req.body.UserId;
+        console.log(req.body);
+         if(Compass!=Newpass){
+            res.json({error:"Password does not match",status:403})
+         }else{
+            try{
+                const getuser = await Users.findOne({_id:userid});
+                if(!getuser){
+                    res.json({error:"user not found"});
+               }else{
+                   const isMatch = await bcrypt.compare(Oldpass,getuser.password);
+                   if(isMatch){
+                        const hash = await bcrypt.genSalt(15);
+                        const hashedpassword = await bcrypt.hash(Newpass,hash);
+                        await Users.updateOne({_id:userid},{password:hashedpassword});
+                        res.json({message:"Password Updated Successfully",status:200})
+    
+                   }
+               }
+            }catch(err){
+                res.json({error:err.message})
+            }
+         }
+        
+ }
+
+ // upload investment plan from admin
+ exports.Investmen_plans = async(req,res)=>{
+      const plan = req.body.Plan;
+      const percentage =  req.body.Percentage
+      const times =  req.body.Times;
+      const minAmount = req.body.MinAmount;
+      const maxAmount = req.body.MaxAmount;
+      if(plan=='Basic Plan' || plan=="Standard Plan" || plan=="Premium Plan"){
+        try{
+               const getplan = await investment_model.findOne({plan:plan},{plan:1})
+               if(getplan){
+                return res.json({message:`${getplan.plan} Aleady Exists`,status:400});
+           }else{
+                    const plans = await investment_model.create({plan:plan,percentage:percentage,times:times,min_amount:minAmount,max_amount:maxAmount})
+                    if(plans){
+                       return res.json({message:`${plan} Created`,status:200})
+                    }
+           }
+         }catch(err){
+                return res.json({error:err.message});
+         }
+      
+      }else{
+        res.status(405).json({info:"invetsment plan must be Basic,Standard or Premium",status:405});
+      }  
+
+ }
   //GET Methods
 
   exports.Get_trans_history = async(req,res)=>{
-      const get_trnx_id = req.params.trnxID
+      const get_trnx_id = req.params.trnxID;
        try{
         const result= await transaction_history_model.find({transactionId:get_trnx_id})
         res.json({dataResult:result,status:200});

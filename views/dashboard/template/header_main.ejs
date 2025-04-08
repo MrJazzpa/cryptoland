@@ -1,9 +1,11 @@
 <div class="main">
+   
     <nav class="navbar navbar-expand navbar-light navbar-bg">
+       
         <a class="sidebar-toggle js-sidebar-toggle">
             <i class="hamburger align-self-center"></i>
         </a>
-
+         
         <div class="navbar-collapse collapse">
             <ul class="navbar-nav navbar-align">
                 <li class="nav-item dropdown">
@@ -85,7 +87,7 @@
                     <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
                         data-bs-toggle="dropdown">
                         <img src="img/avatars/user.png" class="avatar img-fluid rounded me-1"
-                            alt="Charles Hall" />
+                            alt="<%= getuser.name %>" />
                              <% if (getuser) { %>
                                 <span class="text-dark">
                                     <%= getuser.name %>
@@ -94,19 +96,20 @@
                              <% } %>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1"
+                        <a class="dropdown-item" href="/user-profile"><i class="align-middle me-1"
                                 data-feather="user"></i> Profile</a>
-                        <a class="dropdown-item" href="#"><i class="align-middle me-1"
-                                data-feather="pie-chart"></i> Analytics</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="index.html"><i class="align-middle me-1"
-                                data-feather="settings"></i> Settings & Privacy</a>
-                        <a class="dropdown-item" href="#"><i class="align-middle me-1"
-                                data-feather="help-circle"></i> Help Center</a>
+                        <a class="dropdown-item" href="/changepassword"><i class="align-middle me-1"
+                                data-feather="lock"></i>Change Password</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/logout">Log out</a>
                     </div>
                 </li>
             </ul>
         </div>
+        <input type="hidden" id="phone_number" value="<%= getuser.phone_number %>">
+        <input type="hidden" id="country" value="<%= getuser.country %>">
+        <input type="hidden" id="state" value="<%= getuser.state %>">.
+        <input type="hidden" id="dob" value="<%= getuser.dob %>">
+        <input type="hidden" id="address" value="<%= getuser.address %>">
     </nav>
+    <div id="displaymessage" style="width:100%;"></div>

@@ -18,6 +18,9 @@ router.post('/update_account',api_controller.update_balance);
 router.post('/transaction_history',api_controller.transaction_history);
 router.post('/deposit_crypto',api_controller.deposit_crypto);
 router.post('/approve_payment',api_controller.approve_payment);
+router.post('/update_user_info',api_controller.update_user_info);
+router.post('/changepassword',api_controller.changepassword);
+router.post('/investment_plans',api_controller.Investmen_plans);
 
 
 //get methods

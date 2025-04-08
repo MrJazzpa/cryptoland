@@ -29,6 +29,8 @@
     <script src="js/copy.js"></script>
     <script src="js/transaction_history.js"></script>
     <script src="js/convertToBtc.js"></script>
+    <script src="js/update_user_profile.js"></script>
+    <script src="js/changepassword.js"></script>
    
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -408,12 +410,27 @@
             $('#dynamic_btc_price').val(`${formattedStaticPrice.toLocaleString()}`);
             $("#btcChange").html(`<span class="${percentageChange >= 0 ? 'green' : 'red'}">${formattedChange}%</span>`);
         }
+        function display_Update_message(){
+          let phone_number= $('#phone_number').val();
+          let country = $('#country').val();
+          let state = $('#state').val();
+          let dob = $("#dob").val();
+          let address= $("#address").val()
+          if(phone_number=="null" && country == "null" && state == "null" && dob == "null" && address == "null"){
 
-        // Fetch BTC price on page load and update every 10 seconds
+                $('#displaymessage').html("<h4 class='alert alert-warning text-dark' style='border:none;text-align:center'>Please Update Your Profile </h4>")
+
+          }else{
+
+          }
+        }
+
+        display_Update_message();
+       
         fetchBTCPrice();
-        setInterval(fetchBTCPrice, 10000);
+        setInterval(fetchBTCPrice,display_Update_message, 10000);
 
-
+      
      
 
     })

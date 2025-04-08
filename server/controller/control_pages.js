@@ -1,6 +1,7 @@
 const User = require('../models/signup_model');
 const account_model=require('../models/account_model');
 const transaction_history_model = require('../models/transaction_history_model');
+const investment_model = require('../models/InvestmentPlans_model');
 
 exports.homepage = async(req, res) =>{
     req.session.user = "Helo";
@@ -114,7 +115,9 @@ exports.investmentPlans= async(req,res)=>{
     try{
          const getuser = await User.findOne({_id:Id});
          if(getuser){
-            res.render("dashboard/investments",{locals,getuser});
+            const getplans = await investment_model.find()
+            console.log(getplans)
+            res.render("dashboard/investments",{locals,getuser,getplans});
          }else{
             res.status(400).json({error:"could not find user"});
          }
@@ -168,6 +171,39 @@ exports.transaction_history=async(req,res)=>{
       res.status(400).json({error:err.message})
    }
   
+}
+exports.user_profile = async (req,res)=>{
+    locals={
+        title:"Profile"
+    }
+    const Id= req.user.id;
+    try{
+         const getuser = await User.findOne({_id:Id});
+         if(getuser){
+            res.render('dashboard/pages-profile',{locals,getuser})
+         }else{
+            res.status(400).json({error:"could not find user"});
+         }
+    }catch(err){
+       res.status(400).json({error:err.message})
+    }
+    
+}
+exports.change_password = async(req,res)=>{
+    locals={
+        title:"Profile"
+    }
+    const Id= req.user.id;
+    try{
+         const getuser = await User.findOne({_id:Id});
+         if(getuser){
+            res.render('dashboard/change_password',{locals,getuser})
+         }else{
+            res.status(400).json({error:"could not find user"});
+         }
+    }catch(err){
+       res.status(400).json({error:err.message})
+    }
 }
 exports.logout = async(req,res)=>{
     res.clearCookie("jwt");

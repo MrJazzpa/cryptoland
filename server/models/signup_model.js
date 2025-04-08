@@ -12,8 +12,33 @@ const UsersSchema = new Schema({
         type: String,
         required:true
    },
+   phone_number :{
+    type: String,
+    required:true,
+    default:"null"
+},
+   country :{
+    type: String,
+    required:true,
+    default:"null"
+},
+state:{
+    type: String,
+    required:true,
+    default:"null"
+},
 
-   password :{
+dob :{
+    type: String,
+    required:true,
+    default:"null"
+},
+address :{
+    type: String,
+    required:true,
+    default:"null"
+},
+ password :{
     type: String,
     required:true
 },

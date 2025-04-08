@@ -21,6 +21,8 @@ router.get ('/dashboard',verify_ejs_token,control_pages.dashboard)
 router.get('/investments',verify_ejs_token,control_pages.investmentPlans)
 router.get('/wallet',verify_ejs_token,control_pages.wallet)
 router.get('/transaction_history',verify_ejs_token,control_pages.transaction_history)
+router.get('/user-profile',verify_ejs_token,control_pages.user_profile)
+router.get('/changepassword',verify_ejs_token,control_pages.change_password);
 router.get('/logout',control_pages.logout);
  
 module.exports = router;
