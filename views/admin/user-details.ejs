@@ -1,0 +1,125 @@
+<%- include('templates/head.ejs') %>
+<%- include('templates/header.ejs') %>
+
+      
+        <div class="app-main">
+            <%- include('templates/sidebar.ejs') %>
+            <div class="app-main__outer">
+                <div class="app-main__inner">
+                    <div class="app-page-title app-page-title-simple">
+                        <div class="page-title-wrapper">
+                            <div class="page-title-heading">
+                                <div>
+                                    <div class="page-title-head center-elem">
+                                        <span class="d-inline-block pr-2">
+                                            <i class="lnr-apartment opacity-6"></i>
+                                        </span>
+                                        <span class="d-inline-block">Single User Detatails</span>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                  
+                    <div id="msg"></div>
+                   
+                    <div class="row">
+                        <div class="col-sm-12 col-md-7 col-lg-12">
+                            <div class="mb-3 card">
+                                <div class="container rounded bg-white mt-5 mb-5">
+                                    <div class="row">
+                                        <div class="col-md-3 border-right">
+                                            <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
+                                                <span class="font-weight-bold">Name: <%= user_detail[0].name %></span>
+                                                <span class="font-weight-bold"> <%= user_detail[0].email %></span>
+                                                <span class="font-weight-bold">Country: <%= user_detail[0].country %> </span>
+                                                <span class="font-weight-bold">Deposit: <%= "$"+getbalance[0].Deposit_Balance %> </span>
+                                                <span class="font-weight-bold">Total Balance: <%= "$"+getbalance[0].Total_Balance %> </span>
+                                            </div>
+                                        </div>
+                                       
+                                        <div class="col-md-5 border-right">
+                                            <div class="p-3 py-5">
+                                               <div class="card">
+                                                  <div class="card-header" >
+                                                   
+                                                        Update Profile
+                                                    
+                                                  </div>
+                                                  <div class="card-body">
+                                                    <form id="update_profile">
+                                                    
+                                                    <div class="row mt-3">
+                                                        <div class="col-md-12" style="margin-bottom: 4%;">
+                                                            <input type="text" class="form-control"  value=" <%= user_detail[0].name %>" >
+                                                        </div>
+                                                        <div class="col-md-12" style="margin-bottom: 4%;"> 
+                                                            <input type="text" class="form-control" value=" <%= user_detail[0].email %>" >
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <input type="text" class="form-control" value=" <%= user_detail[0].phone_number %>"  >
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <div class="row" style="margin-top:4%">
+                                                        <div class="col-md-6" >
+                                                            <label for=""> EMIAL VERIFICATION</label><br>
+                                                            <input type="checkbox" data-toggle="toggle" id="update_verification" data-on="verified" data-off="Not Verified" class="btn-lg">
+                                                            
+                                                        </div>
+                                                       </div>
+                                                    <div style="margin-top:4%">
+                                                        <button class="btn btn-primary profile-button" type="button" style="width:100%">Save Profile</button>
+                                                    </div>
+                                                   </form>
+                                                  </div>
+                                               </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="p-3 py-5">
+                                                 <form  id="update_crypto_account">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                           CRYPTO OPERATION
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="col-md-12" style="margin-top:6%">
+                                                              <input type="hidden"  id="userid" value="<%= user_detail[0]._id %>">
+                                                                <input type="text" class="form-control" id="btc_amount" placeholder="Enter Btc Amount">
+                                                            </div>
+                                                            <div class="col-md-12" style="margin-top:6%">
+                                                                
+                                                                <input type="text" class="form-control" id="eth_amount"  placeholder="Enter ETH Amount">
+                                                            </div>
+                                                            <div class="col-md-12" style="margin-top:6%">
+                                                               
+                                                                <input type="text" class="form-control" id="usdt_amount"  placeholder="Enter USDT Amount">
+                                                            </div>
+                                                              <div class="col-md-12" style="margin-top:6%">
+                                                                <input type="text" class="form-control" id="doge_amount"  placeholder="Enter DOGE Amount">
+                                                            </div>
+                                                            <div class="col-md-12" style="margin-top:8%">
+                                                                <button type="submit" class="btn btn-primary form-control">Save Crypto</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                 </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                                </div>
+                            </div>
+                           
+                        </div>
+                        
+                    </div>
+               
+                </div>
+                <%- include('admin_modal/success.ejs') %>
+             <%- include('templates/footer.ejs') %>

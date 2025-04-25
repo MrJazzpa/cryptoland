@@ -2,6 +2,7 @@ const User = require('../models/signup_model');
 const account_model=require('../models/account_model');
 const transaction_history_model = require('../models/transaction_history_model');
 const investment_model = require('../models/InvestmentPlans_model');
+const admin_model = require('../models/Admin_model');
 
 exports.homepage = async(req, res) =>{
     req.session.user = "Helo";
@@ -116,7 +117,7 @@ exports.investmentPlans= async(req,res)=>{
          const getuser = await User.findOne({_id:Id});
          if(getuser){
             const getplans = await investment_model.find()
-            console.log(getplans)
+           // console.log(getplans)
             res.render("dashboard/investments",{locals,getuser,getplans});
          }else{
             res.status(400).json({error:"could not find user"});
@@ -205,9 +206,99 @@ exports.change_password = async(req,res)=>{
        res.status(400).json({error:err.message})
     }
 }
-exports.logout = async(req,res)=>{
+
+
+exports.admin_logout = async(req,res)=>{
     res.clearCookie("jwt");
     res.redirect('/signin');
 }
+// ADMIN SECTION
 
+exports.admin_login = async(req,res)=>{
+     res.render('admin/Admin-login');
+}
+
+exports.AdminDashboard =  async(req,res)=>{
+        const id = req.admin.id;
+        const local ={
+            tittle:"Admin Dashboard"
+    }
+    try{
+    const getAdmin = await admin_model.findOne({_id:id});
+     const count = await User.countDocuments()
+    if(getAdmin){
+        res.render('admin/admin-dashboards.ejs',
+            {
+                local,
+                getAdmin,
+                count
+            });
+    }else{
+            res.status(400).json({error:"Could not find user"})
+    }
+
+    }catch(err){
+        res.status(400).json({error:err.message});
+}
+}
+
+exports.AllUsers = async(req,res)=>{
+         const id = req.admin.id;
+         const local ={
+                tittle:"Users"
+        }
+        try{
+         const getAdmin = await admin_model.findOne({_id:id});
+         const Allusers = await User.find();
+        if(getAdmin){
+            res.render('admin/all-users',
+                {
+                    local,
+                    getAdmin,
+                    Allusers
+                    
+                });
+        }else{
+                res.status(400).json({error:"Could not find user"})
+        }
+
+        }catch(err){
+            res.status(400).json({error:err.message});
+        }
+}
+
+exports.getUserDetails = async(req,res)=>{
+       const user_id = req.query.id;
+       const id = req.admin.id;
+       const local ={
+              tittle:"Users"
+      }
+      try{
+       const getAdmin = await admin_model.findOne({_id:id});
+      const user_detail = await User.find({_id:user_id})
+      const getbalance = await account_model.find({userid:user_id})
+      console.log(user_detail)
+       res.render('admin/user-details',
+        {
+            local,
+            getAdmin,
+           user_detail,
+           getbalance
+           
+            
+        });
+     
+
+      }catch(err){
+          res.status(400).json({error:err.message});
+      }
+       
+
+}
+
+
+exports.logout = async(req,res)=>{
+    res.clearCookie("jwt_admin_token");
+    res.redirect('/admin-login');
+}
 

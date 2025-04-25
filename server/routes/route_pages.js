@@ -3,6 +3,8 @@ const router = express.Router();
 const control_pages = require("../controller/control_pages");
 const api_controller = require("../controller/api_controller");
 const   verify_ejs_token = require('../middleware/validateTokenHandler')
+const veryify_admin_token = require('../middleware/verify_admin_token');
+const verify_admin_token = require('../middleware/verify_admin_token');
 
 
 router.get("/",control_pages.homepage)
@@ -25,4 +27,10 @@ router.get('/user-profile',verify_ejs_token,control_pages.user_profile)
 router.get('/changepassword',verify_ejs_token,control_pages.change_password);
 router.get('/logout',control_pages.logout);
  
+
+// Admin routes
+router.get('/admin-login',control_pages.admin_login);
+router.get('/admin-dashboard',veryify_admin_token,control_pages.AdminDashboard);
+router.get('/users',verify_admin_token,control_pages.AllUsers);
+router.get('/user-details',verify_admin_token,control_pages.getUserDetails)
 module.exports = router;

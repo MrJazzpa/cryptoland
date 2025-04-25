@@ -27,6 +27,7 @@
 																<h4 class="card-title text-primary"><%= "$"+Number(Investplans.min_amount).toLocaleString() +" - "+ "$"+Number(Investplans.max_amount).toLocaleString() %></h4>
 																
 																<ul class="list-group list-group-flush">
+																	
 																	<li class="list-group-item" style="background-color: white;">Get <%= Investplans.percentage+"%" %> Of Your
 																		Investnent</li>
 																	<li class="list-group-item " style="background-color: white;"><i
@@ -34,7 +35,9 @@
 																		for <%= Investplans.times %> times</li>
 																	<li class="list-group-item"  style="background-color: white;" >Single User</li>
 																</ul>
-																<a href="#" class="btn btn-outline-primary mt-3">Choose Plan</a>
+																<div class="data-container" data-percentage="<%=   Investplans.percentage %>" data-min_amount="<%= Investplans.min_amount %>" data-max_amount="<%= Investplans.max_amount %>" data-times="<%= Investplans.times %>" data-plan="<%= Investplans.plan %>" data-amount="<%= '$'+Number(Investplans.min_amount).toLocaleString()+" - "+ "$"+Number(Investplans.max_amount).toLocaleString() %>">
+																	<a  class="btn btn-outline-primary mt-3 btn_basic_plan" >Choose Plan</a>
+																</div>
 															</div>
 														</div>
 													</div>
@@ -57,7 +60,9 @@
 																				for <%= Investplans.times %> times</li>
 																			<li class="list-group-item"  style="background-color: white;" >Single User</li>
 																		</ul>
-																	<a href="#" class="btn btn-outline-success mt-3">Choose Plan</a>
+																		<div class="data-container" data-percentage="<%= Investplans.percentage %>" data-min_amount="<%= Investplans.min_amount %>" data-max_amount="<%= Investplans.max_amount %>" data-times="<%=  Investplans.times %>" data-plan="<%= Investplans.plan %>" data-amount="<%= '$'+Number(Investplans.min_amount).toLocaleString()+" - "+ "$"+Number(Investplans.max_amount).toLocaleString() %>">
+																			<a  class="btn btn-outline-primary mt-3 btn_basic_plan" >Choose Plan</a>
+																		</div>
 																</div>
 															</div>
 														</div>
@@ -81,7 +86,9 @@
 																				for <%= Investplans.times %> times</li>
 																			<li class="list-group-item"  style="background-color: white;" >Single User</li>
 																		</ul>
-																		<a href="#" class="btn btn-outline-danger mt-3">Choose Plan</a>
+																		<div class="data-container" data-percentage="<%= Investplans.percentage  %>" data-min_amount="<%= Investplans.min_amount %>" data-max_amount="<%= Investplans.max_amount %>" data-times="<%=  Investplans.times %>" data-plan="<%= Investplans.plan %>" data-amount="<%= '$'+Number(Investplans.min_amount).toLocaleString()+" - "+ "$"+Number(Investplans.max_amount).toLocaleString() %>">
+																			<a  class="btn btn-outline-primary mt-3 btn_basic_plan" >Choose Plan</a>
+																		</div>
 																	</div>
 																</div>
 													</div>
@@ -91,18 +98,77 @@
 
 									<% } %>
 										<% }) %>
-
-
-
-
-
-
 								</div>
 							</div>
 						</div>
 					</div>
 
 				</div>
-			</main>
 
-			<%- include('template/footer') %>
+
+				<!-- Basic Plan -->
+				<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"  style="border:solid 1px">
+					<div class="modal-dialog"  >
+					<div class="modal-content">
+						<div class="modal-header">
+						<h5 class="modal-title" id="staticBackdropLabel">Investment Plans</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<form id="save_plan" action="">
+					        <div class="row">
+								
+								<div class="col-md-6">
+											<div class="card text-center">
+												<div class="card-header  text-dark" style="border: solid 1px lightgray; background-color: lightgray;" >
+													<span id="investplan"></span>
+												</div>
+												<div class="card-body">
+													<ul class="list-group list-group-flush">
+														<li class="list-group-item text-danger investamount" style="background-color: white;" ></li>
+														<li class="list-group-item " style="background-color: white;" id="percentage"></li>
+														<li class="list-group-item " style="background-color: white;" id="times"><i class="fa-solid fa-circle-check text-danger"></i> </li>
+														<li class="list-group-item" style="background-color: white;">
+															<button type="button" class="btn btn-danger chnageBtn" data-bs-dismiss="modal" style="width:100%" >Back</button>
+														</li>
+													</ul>
+				
+												</div>
+											</div>
+										
+									
+								</div>
+								<div class="col-md-6">
+									<div class="card">
+										<div class="card-body">
+											
+											<div class="mb-3">
+												<label for="exampleFormControlInput1" class="form-label">Amount</label>
+												<input type="text" id="amount_plan" class="form-control"  placeholder="" required>
+											  </div>
+
+											  <div class="mb-3">
+												<label for="">Per Time</label>
+												<input type="text" class="form-control" id="number_times" placeholder="" readonly>
+											  </div>
+
+											  <div class="mb-3">
+												<label for="exampleFormControlInput1" class="form-label">Total Return</label>
+												<input type="text" class="form-control" id="Percentage_return" readonly>
+											  </div>
+
+										</div>
+									</div>
+								</div>
+								<button type="submit" class="btn btn-primary" id="btn_save_plan">Make Investment</button>
+							</div>
+						</form>
+						</div>
+						
+					</div>
+					</div>
+				</div>
+	</main>
+
+	<%- include('template/footer') %>
+	

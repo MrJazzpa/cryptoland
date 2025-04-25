@@ -7,7 +7,11 @@ const account_model = require('../models/account_model');
 const deposite_model =require('../models/depositedMoney_model');
 const transaction_history_model = require('../models/transaction_history_model');
 const investment_model = require('../models/InvestmentPlans_model');
+const investment_history = require('../models/investment_history');
+const Admin_model = require('../models/Admin_model');
 const { json } = require('express');
+const { parse } = require('dotenv');
+
 //post requests
 const sendmail = async function(from,to,subject,text){
     const mailOptions ={
@@ -26,7 +30,7 @@ const sendmail = async function(from,to,subject,text){
      }
 }
 const Code = Math.floor(1000 + Math.random() * 9000);
-verify_code = Code.toString();
+ const verify_code = Code.toString();
 exports.post_signup = async(req, res) =>{
      const subject = "Verify Email";
      quick_text = " Hello "+req.body.Name+"\n Welcome to CryptoTrust.com. \n find your one time code bellow \n  "+verify_code+" \n expires in five Minutes"
@@ -257,8 +261,9 @@ exports.post_signup = async(req, res) =>{
      const usdt_price = req.body.usdt_price
      const userId = req.body.UserId;
       const totalformatted= parseFloat(total.replace(/,/g,""));
-      const check_user = await account_model.findOne({userid:userId})
+      const check_user = await account_model.find({userid:userId},{Total_Balance:1,userid:1})
       if(check_user.userid!=""){
+          // let total_balance=  parseFloat(check_user.Total_Balance.replace(/,/g,""));
            const update = await account_model.updateOne({userid:userId},{Btc_Amount:btc_price,Ethereum_Amount:eth_price,Doge_Amount:doge_price,Usdt_Amount:usdt_price,Total_Balance:totalformatted})
            if(update){
                 const get_account_balance = await account_model.findOne({userid:userId},{Total_Balance:1})
@@ -459,6 +464,7 @@ exports.post_signup = async(req, res) =>{
                     }else{
                         return  res.json({error:"payment could not be approved"});
                     }
+                    
                 case "USDT":
                     const new_usdt = Usdt_Amount+Amount
                     const usdt_balance= deposite_balance+Amount;
@@ -568,6 +574,84 @@ exports.post_signup = async(req, res) =>{
       }  
 
  }
+ 
+ exports.get_investment_plan_amount = async(req, res)=>{
+    const userid = req.body.Userid;
+    const min_amount = req.body.Min_amount;
+    const max_amount = req.body.Max_amount;
+    const plan_amount = parseFloat(req.body.Amount_plan);
+    const plan = req.body.Plan;
+    const Times = req.body.Times;
+    const percentage_return = req.body.Percentage_return
+      const getemail = await Users.findOne({_id:userid});
+      const email = getemail.email;
+      const Subject="Investment";
+       const text = `Hello! ${getemail.name}\n\n Your Investment Has Been Made Successfully. \n\n Please Refresh Your Dasboard to View Investments`;
+    try{
+
+           const get_deposit_balance = await account_model.findOne({userid:userid},{Deposit_Balance:1,Total_Balance:1});
+            const get_min_amount = await investment_model.findOne({plan:plan});
+            const depositBalance = get_deposit_balance.Deposit_Balance.replace(/,/g,"");
+           const finaldeposit = parseInt(depositBalance)
+            const MinAmount = parseInt(get_min_amount.min_amount);
+            const MaxAmount= parseInt(get_min_amount.max_amount);
+            const  get_total_balance =  parseFloat(get_deposit_balance.Total_Balance.replace(/,/g,""));
+             const insertData = async function(){
+                const update_total = get_total_balance+plan_amount;
+                const insertdata =({userid:userid,plan:plan,investmentAmount:plan_amount,number_times:Times,Percentage_return:percentage_return})
+                const insert_history = await investment_history.create(insertdata);
+                 
+                if(insert_history){
+                  const  planAmount = parseInt(plan_amount)
+                   const newbalance = finaldeposit - planAmount;
+                    await account_model.updateOne({userid:userid},{Total_Balance:update_total.toLocaleString('en-Us',{minimumFractionDigits:2}),Deposit_Balance:newbalance.toLocaleString('en-Us',{minimumFractionDigits:2})})
+                    sendmail(process.env.EMAIL,email,Subject,text);
+                  res.json({messages:"Investment Successfull",status:200})
+                }
+             }
+            if(finaldeposit>=min_amount|| finaldeposit>=max_amount){
+                switch(get_min_amount.plan){
+                    case "Basic Plan":
+                        if(plan_amount>MaxAmount){
+                               res.json({error:`Exceeded maximum amount for ${get_min_amount.plan}`,status:400})
+                        }else{
+                            
+                           insertData();
+                        }
+                        break;
+                        case "Standard Plan":
+                            if(plan_amount>MaxAmount){
+                                   res.json({error:`Exceeded maximum amount for ${get_min_amount.plan}`,status:400})
+                            }else{
+                                
+                               insertData();
+                            }
+                            break;
+                        case "Premium Plan":
+                                if(plan_amount>MaxAmount){
+                                       res.json({error:`Exceeded maximum amount for ${get_min_amount.plan}`,status:400})
+                                }else{
+                                    
+                                   insertData()
+                                }
+                                 break;
+                        default:
+                            res.json({error:"No plan found"})
+                }
+            
+            }else{
+                 res.json({error:"You do not have money to make this investment  ",status:400});
+            }
+    }catch(err){
+       res.json({error:err.message});
+    }
+
+
+}
+
+exports.insert_investment_history = async(req,res)=>{
+    res.json('wprked')
+}
   //GET Methods
 
   exports.Get_trans_history = async(req,res)=>{
@@ -580,3 +664,4 @@ exports.post_signup = async(req, res) =>{
        }
        
   }
+

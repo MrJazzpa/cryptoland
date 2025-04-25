@@ -1,0 +1,291 @@
+<%- include('templates/head.ejs') %>
+<%- include('templates/header.ejs') %>
+
+      
+        <div class="app-main">
+            <%- include('templates/sidebar.ejs') %>
+            <div class="app-main__outer">
+                <div class="app-main__inner">
+                    <div class="app-page-title app-page-title-simple">
+                        <div class="page-title-wrapper">
+                            <div class="page-title-heading">
+                                <div>
+                                    <div class="page-title-head center-elem">
+                                        <span class="d-inline-block pr-2">
+                                            <i class="lnr-apartment opacity-6"></i>
+                                        </span>
+                                        <span class="d-inline-block">Admin Dashboard</span>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+                    <div class="mbg-3 alert alert-info alert-dismissible fade show" role="alert">
+                        <span class="pr-2">
+                            <i class="fa fa-question-circle"></i>
+                        </span>
+                         Information showing users statistics
+                    </div>
+
+                    <div class="row">
+                    <div class="col-md-6 col-lg-3">
+                         <div
+                                class="widget-chart widget-chart2 text-left mb-3 card-btm-border card-shadow-primary border-primary card">
+                                <div class="widget-chat-wrapper-outer">
+                                    <a href="/users" style="text-decoration: none;">
+                                    <div class="widget-chart-content">
+                                        <div class="widget-title opacity-5 text-uppercase">All Users</div>
+                                        <div class="widget-numbers mt-2 fsize-4 mb-0 w-100">
+                                            <div class="widget-chart-flex align-items-center">
+                                                <div>
+                                                    <span class="opacity-10 text-success pr-2">
+                                                        <i class="fa fa-angle-up"></i>
+                                                    </span>
+                                                    <%= count %>
+                                                    
+                                                </div>
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div></a>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div
+                                class="widget-chart widget-chart2 text-left mb-3 card-btm-border card-shadow-danger border-danger card">
+                                <div class="widget-chat-wrapper-outer">
+                                    <div class="widget-chart-content">
+                                        <div class="widget-title opacity-5 text-uppercase">All Blocked Users</div>
+                                        <div class="widget-numbers mt-2 fsize-4 mb-0 w-100">
+                                            <div class="widget-chart-flex align-items-center">
+                                                <div>
+                                                    <span class="opacity-10 text-danger pr-2">
+                                                        <i class="fa fa-angle-down"></i>
+                                                    </span>
+                                                    71
+                                                    <small class="opacity-5 pl-1">%</small>
+                                                </div>
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div
+                                class="widget-chart widget-chart2 text-left mb-3 card-btm-border card-shadow-warning border-warning card">
+                                <div class="widget-chat-wrapper-outer">
+                                    <div class="widget-chart-content">
+                                        <div class="widget-title opacity-5 text-uppercase">Email Unverified</div>
+                                        <div class="widget-numbers mt-2 fsize-4 mb-0 w-100">
+                                            <div class="widget-chart-flex align-items-center">
+                                                <div>
+                                                    
+                                                    1,45M
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div
+                                class="widget-chart widget-chart2 text-left mb-3 card-btm-border card-shadow-success border-success card">
+                                <div class="widget-chat-wrapper-outer">
+                                    <div class="widget-chart-content">
+                                        <div class="widget-title opacity-5 text-uppercase">Phone Unverified</div>
+                                        <div class="widget-numbers mt-2 fsize-4 mb-0 w-100">
+                                            <div class="widget-chart-flex align-items-center">
+                                                <div>
+                                                    
+                                                    34
+                                                  
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mbg-3 alert alert-primary alert-dismissible fade show" role="alert">
+                        <span class="pr-2">
+                            <i class="fa fa-question-circle"></i>
+                        </span>
+                         Deposit Statistics
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 col-lg-3">
+                            <div
+                                class="widget-chart widget-chart2 text-left mb-3 card-btm-border card-shadow-primary border-primary card">
+                                <div class="widget-chat-wrapper-outer">
+                                    <div class="widget-chart-content">
+                                        <div class="widget-title opacity-5 text-uppercase">Deposit Methods</div>
+                                        <div class="widget-numbers mt-2 fsize-4 mb-0 w-100">
+                                            <div class="widget-chart-flex align-items-center">
+                                                <div>
+                                                    <span class="opacity-10 text-success pr-2">
+                                                        <i class="fa fa-angle-up"></i>
+                                                    </span>
+                                                    <%= count %>
+                                                    
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div
+                                class="widget-chart widget-chart2 text-left mb-3 card-btm-border card-shadow-danger border-danger card">
+                                <div class="widget-chat-wrapper-outer">
+                                    <div class="widget-chart-content">
+                                        <div class="widget-title opacity-5 text-uppercase">Number of Deposit</div>
+                                        <div class="widget-numbers mt-2 fsize-4 mb-0 w-100">
+                                            <div class="widget-chart-flex align-items-center">
+                                                <div>
+                                                    <span class="opacity-10 text-danger pr-2">
+                                                        <i class="fa fa-angle-down"></i>
+                                                    </span>
+                                                    71
+                                                   
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div
+                                class="widget-chart widget-chart2 text-left mb-3 card-btm-border card-shadow-warning border-warning card">
+                                <div class="widget-chat-wrapper-outer">
+                                    <div class="widget-chart-content">
+                                        <div class="widget-title opacity-5 text-uppercase">Total Deposit</div>
+                                        <div class="widget-numbers mt-2 fsize-4 mb-0 w-100">
+                                            <div class="widget-chart-flex align-items-center">
+                                                <div>
+                                                    
+                                                    1,45M
+                                                </div>
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div
+                                class="widget-chart widget-chart2 text-left mb-3 card-btm-border card-shadow-success border-success card">
+                                <div class="widget-chat-wrapper-outer">
+                                    <div class="widget-chart-content">
+                                        <div class="widget-title opacity-5 text-uppercase">Pending Deposits</div>
+                                        <div class="widget-numbers mt-2 fsize-4 mb-0 w-100">
+                                            <div class="widget-chart-flex align-items-center">
+                                                <div>
+                                                    
+                                                    34
+                                                  
+                                                </div>
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="mbg-3 alert alert-danger alert-dismissible fade show" role="alert">
+                        <span class="pr-2">
+                            <i class="fa fa-question-circle"></i>
+                        </span>
+                         Investment Plan Statistics
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 col-lg-4">
+                            <div
+                                class="widget-chart widget-chart2 text-left mb-3 card-btm-border card-shadow-primary border-primary card">
+                                <div class="widget-chat-wrapper-outer">
+                                    <div class="widget-chart-content">
+                                        <div class="widget-title opacity-5 text-uppercase">Total Plan</div>
+                                        <div class="widget-numbers mt-2 fsize-4 mb-0 w-100">
+                                            <div class="widget-chart-flex align-items-center">
+                                                <div>
+                                                    <span class="opacity-10 text-success pr-2">
+                                                        <i class="fa fa-angle-up"></i>
+                                                    </span>
+                                                    <%= count %>
+                                                    
+                                                </div>
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div
+                                class="widget-chart widget-chart2 text-left mb-3 card-btm-border card-shadow-danger border-danger card">
+                                <div class="widget-chat-wrapper-outer">
+                                    <div class="widget-chart-content">
+                                        <div class="widget-title opacity-5 text-uppercase">Active Plan</div>
+                                        <div class="widget-numbers mt-2 fsize-4 mb-0 w-100">
+                                            <div class="widget-chart-flex align-items-center">
+                                                <div>
+                                                    <span class="opacity-10 text-danger pr-2">
+                                                        <i class="fa fa-angle-down"></i>
+                                                    </span>
+                                                    71
+                                                    <small class="opacity-5 pl-1">%</small>
+                                                </div>
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div
+                                class="widget-chart widget-chart2 text-left mb-3 card-btm-border card-shadow-warning border-warning card">
+                                <div class="widget-chat-wrapper-outer">
+                                    <div class="widget-chart-content">
+                                        <div class="widget-title opacity-5 text-uppercase">Total Deactivated Plan</div>
+                                        <div class="widget-numbers mt-2 fsize-4 mb-0 w-100">
+                                            <div class="widget-chart-flex align-items-center">
+                                                <div>
+                                                    
+                                                    1,45M
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+
+
+                </div>
+             <%- include('templates/footer.ejs') %>

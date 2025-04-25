@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const api_controller = require("../controller/api_controller");
-//const passport = require('passport');
-const verifyToken = require('../middleware/verifyToken');
+const admin_api_controller = require('../controller/admin_api_controller');
 require('../middleware/passport');
 
 router.post('/currentUser',api_controller.currentUser)
@@ -21,9 +20,13 @@ router.post('/approve_payment',api_controller.approve_payment);
 router.post('/update_user_info',api_controller.update_user_info);
 router.post('/changepassword',api_controller.changepassword);
 router.post('/investment_plans',api_controller.Investmen_plans);
-
+router.post('/getinvestment_plan_amount',api_controller.get_investment_plan_amount);
+//router.post('/investment_history',api_controller.insert_investment_history);
 
 //get methods
-router.get('/get_transaction_history/:trnxID',api_controller.Get_trans_history)
+router.get('/get_transaction_history/:trnxID',api_controller.Get_trans_history);
 
+//Admin routes
+router.post('/admin_register',admin_api_controller.registerAdmin);
+router.post('/admin_login',admin_api_controller.admin_login);
 module.exports = router

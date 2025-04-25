@@ -1,0 +1,47 @@
+
+<div class="app-drawer-overlay d-none animated fadeIn"></div>
+<script type="text/javascript" src="admin-assets/scripts/main.d810cf0ae7f39f28f336.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function(){
+        
+
+        $('.btn_get_id').on("click",function(){
+            const container = $(this).closest('.data-container');
+            const id = container.data('id');
+             window.location.href=`/user-details?id=${id}`
+            
+        })
+
+        $('#update_crypto_account').on('submit',function(e){
+            e.preventDefault();
+             const userid = $('#userid').val();
+            let btc_amount = $('#btc_amount').val();
+            let eth_amount = $('#eth_amount').val();
+            let usdt_amount = $('#usdt_amount').val();
+            let doge_amount = $('#doge_amount').val()
+            $.ajax({
+                  url:"http://localhost:5000/api/update_account",
+                  method:"POST",
+                  data:{
+                      UserId: userid,
+                      Btc_Amount: btc_amount,
+                      Ethereum_Amount: eth_amount,
+                      Doge_Amount: doge_amount,
+                      Usdt_Amount: usdt_amount
+                  },
+                  success:function(data){
+                         $('#successModal').modal('show');
+                         
+                  }
+
+            })
+           
+        });
+    })
+</script>
+</body>
+
+</html>
