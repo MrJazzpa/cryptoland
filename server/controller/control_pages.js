@@ -208,7 +208,7 @@ exports.change_password = async(req,res)=>{
 }
 
 
-exports.admin_logout = async(req,res)=>{
+exports.logout = async(req,res)=>{
     res.clearCookie("jwt");
     res.redirect('/signin');
 }
@@ -297,7 +297,7 @@ exports.getUserDetails = async(req,res)=>{
 }
 
 
-exports.logout = async(req,res)=>{
+exports.admin_logout = async(req,res)=>{
     res.clearCookie("jwt_admin_token");
     res.redirect('/admin-login');
 }

@@ -1,9 +1,9 @@
 $(document).ready(function(){
-    if($('#phone_number').val()!="" && $('#country').val()!="" &&  $('#address').val()!="" ){
+  /*  if($('#phone_number').val()!="" && $('#country').val()!="" ){
         $('#profile_btn').prop('disabled', true);
     }else{
         $('#profile_btn').prop('disabled', false);
-    }
+    }*/
 $('#update_user_info').on('submit',function(e){
     e.preventDefault();
      let userid = $('#userid').val();

@@ -29,4 +29,5 @@ router.get('/get_transaction_history/:trnxID',api_controller.Get_trans_history);
 //Admin routes
 router.post('/admin_register',admin_api_controller.registerAdmin);
 router.post('/admin_login',admin_api_controller.admin_login);
+router.post('/admin_add_money',admin_api_controller.add_money);
 module.exports = router

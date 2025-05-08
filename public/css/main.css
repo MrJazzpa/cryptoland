@@ -5472,3 +5472,21 @@ blockquote span {
 .footer .copyright-area p a:hover {
   color: #3E80FF;
 }
+
+	#preloader-img {
+		width: 100px;
+		height: 100px;
+		animation: pop 1.2s ease-in-out infinite;
+	  }
+	
+	  @keyframes pop {
+		0%, 100% {
+		  transform: scale(1);
+		  opacity: 0.7;
+		}
+		50% {
+		  transform: scale(2.2);
+		  opacity: 1;
+		}
+	  }
+  

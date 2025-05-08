@@ -41,6 +41,26 @@
            
         });
     })
+
+    $('#deposit_money').on('submit',function(e){
+            e.preventDefault();
+            let amount = $('#amount').val();
+            const userid =$('#userid').val();
+            const email = $('#email').val();
+            $.ajax({
+                  url:"http://localhost:5000/api/admin_add_money",
+                   method:"POST",
+                   data:{
+                           UserId:userid,
+                           Email:email,
+                           Amount:amount   
+                   },
+                   success:function(data){
+                    $('#depositModal').modal('hide');
+                    $('#successModal').modal('show');
+                   }
+            })
+    })
 </script>
 </body>
 

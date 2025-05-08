@@ -8,11 +8,14 @@ Author: GrayGrids
 
     window.onload = function () {
         window.setTimeout(fadeout, 500);
+        
+        
     }
 
     function fadeout() {
         document.querySelector('.preloader').style.opacity = '0';
         document.querySelector('.preloader').style.display = 'none';
+        $('#main-content').fadeIn()
     }
 
 
@@ -26,10 +29,12 @@ Author: GrayGrids
         var logo = document.querySelector('.navbar-brand img')
         if (window.pageYOffset > sticky) {
           header_navbar.classList.add("sticky");
-          logo.src = 'images/white-logo.svg';
+          logo.src = 'images/cow-circle.S5_Ojsw4_Z2a0x7O.svg';
+          logotext = document.getElementById('logotext');
+          
         } else {
           header_navbar.classList.remove("sticky");
-          logo.src = 'images/white-logo.svg';
+          logo.src = 'images/cow-circle.S5_Ojsw4_Z2a0x7O.svg';
         }
 
         // show or hide the back-top-top button

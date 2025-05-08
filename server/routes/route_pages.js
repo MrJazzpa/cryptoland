@@ -30,6 +30,7 @@ router.get('/logout',control_pages.logout);
 
 // Admin routes
 router.get('/admin-login',control_pages.admin_login);
+router.get('/admin_logout',control_pages.admin_logout);
 router.get('/admin-dashboard',veryify_admin_token,control_pages.AdminDashboard);
 router.get('/users',verify_admin_token,control_pages.AllUsers);
 router.get('/user-details',verify_admin_token,control_pages.getUserDetails)

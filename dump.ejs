@@ -126,6 +126,53 @@
                   }else{
                       return  res.json({error:"payment could not be approved"});
                   }
+
+
+
+
+                  changestatus()
+                  if(changestatus){
+                       await account_model.updateOne({userid:userid},{Ethereum_Amount:new_eth.toLocaleString('en-Us',{minimumFractionDigits:2}),Deposit_Balance:final_balance.toLocaleString('en-Us',{minimumFractionDigits:2})})
+                      return  res.json({success:"success", status:200});
+                  }else{
+                      return  res.json({error:"payment could not be approved"});
+                  }
+
+
+                  const check= sendmail(process.env.EMAIL,email,subject,quick_text);
+                    if(check){
+                        //const create_account_balance =await account_model.create(us)
+                        res.status(200).json({message:"email has been sent "+email,status:200})
+                       
+                    }else{
+                      res.status(400).json({error:"could not send email"});
+                    }
+
+
+
+                    $.post('http://localhost:5000/api/admin_login',
+            {
+                  Username:username,
+                  Password:password 
+          },
+          function(data){
+                if(data.status==200){
+                    $('#msg').html(`<p class='alert alert-success' style'text-align:center'>${data.message}</p>`);
+                }else{
+                    $('#msg').html(`<p class='alert alert-danger' style'text-align:center'>${data.error}</p>`);
+                }
+          });
+
+
+
+
+          $.ajax({
+                 url:`http://localhost:5000/user-details/${id}`,
+                 method: 'GET',
+                 success:function(data){
+                   
+                 }
+            })
 </script>
 
 

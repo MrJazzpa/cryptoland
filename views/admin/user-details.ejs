@@ -69,6 +69,10 @@
                                                             <input type="checkbox" data-toggle="toggle" id="update_verification" data-on="verified" data-off="Not Verified" class="btn-lg">
                                                             
                                                         </div>
+                                                        <div class="col-md-6" >
+                                                            <label for=""> DEPOSIT MONEY</label><br>
+                                                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#depositModal"> Add Deposit </button>
+                                                        </div>
                                                        </div>
                                                     <div style="margin-top:4%">
                                                         <button class="btn btn-primary profile-button" type="button" style="width:100%">Save Profile</button>
@@ -121,5 +125,6 @@
                     </div>
                
                 </div>
+                <%- include('admin_modal/bankDeposit.ejs') %>
                 <%- include('admin_modal/success.ejs') %>
              <%- include('templates/footer.ejs') %>

@@ -1,0 +1,33 @@
+<!-- Modal -->
+<div class="modal fade" id="depositModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Deposit Money</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form id="deposit_money">
+                <div class="row">
+                    <div class="col-md-12">
+                        <input type="hidden"  id="userid" value="<%= user_detail[0]._id %>">
+                        <input type="hidden" class="form-control" id="email" value=" <%= user_detail[0].email %>" >
+                        <label for="" style="margin-bottom: 2%;">Amount</label>
+
+                        <input type="text" class="form-control" id="amount" name="amount" style="margin-bottom: 2%; height: 40px;" placeholder="5000"required>
+                    </div>
+                   
+                </div>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary"
+                data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Add Money</button>
+        </div>
+        </form>
+    </div>
+</div>
+</div>
