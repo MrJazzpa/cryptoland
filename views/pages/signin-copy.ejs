@@ -19,61 +19,56 @@
 
 </head>
 <body>
-    <!-- Preloader -->
-    <div class="preloader">
+     <!-- Preloader -->
+     <div class="preloader">
         <div class="preloader-inner">
             <div class="preloader-icon">
-                <img src="images/cow-circle.S5_Ojsw4_Z2a0x7O.svg" alt="Loading..." id="preloader-img" />
-                 
+                <span></span>
+                <span></span>
             </div>
         </div>
     </div>
-    <!-- /End Preloader -->
-    <!-- Start Account Sign In Area -->
+    <!-- Start Account Signup Area -->
     <div class="account-login section">
         <div class="container">
             <div class="row">
-                <% if (error_msg) { %>
-                 <div class="alert alert-danger"><p><%= error_msg %></p></p></div>
-                <% } %>
                 <div class="col-lg-6 offset-lg-3 col-md-10 offset-md-1 col-12">
-                    <form class="card login-form inner-content" method="post" action="/signin">
+                    
+                    <form class="card login-form inner-content"  id="form_register">
                         <div class="card-body">
                             <div class="title">
-                                <h3>Sign In Now</h3>
-                                <p>Sign in by entering the information below.</p>
+                                <h3>Sign Up Now</h3>
+                                <div id="msg"></div>
                             </div>
+                            <div class="or"><span></span></div>
                             <div class="input-head">
-                                <div class="form-group input-group">
-                                    <label><i class="lni lni-envelope"></i></label>
-                                    <input class="form-control" type="email" name="email" id="reg-email"
-                                        placeholder="Enter your email" required>
+                                <div class="row">
+                                    <div class="col-lg-12 col-12">
+                                        <div class="form-group input-group">
+                                            <label><i class="lni lni-user"></i></label>
+                                            <input class="form-control" type="text" id="name" name="name" placeholder="Your name">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-12">
+                                        <div class="form-group input-group">
+                                            <label><i class="lni lni-envelope"></i></label>
+                                            <input class="form-control" type="email" id="email" name="email" placeholder="Your email">
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group input-group">
                                     <label><i class="lni lni-lock-alt"></i></label>
-                                    <input class="form-control" type="password" id="reg-pass"
-                                        placeholder="Enter your password" name="password" required>
+                                    <input class="form-control" type="password" id="password" name="password" placeholder="Your password">
                                 </div>
-                            </div>
-                            <div class="d-flex flex-wrap justify-content-between bottom-content">
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input width-auto" id="exampleCheck1">
-                                    <label class="form-check-label">Remember me</label>
+                                <div class="form-group input-group">
+                                    <label><i class="lni lni-lock-alt"></i></label>
+                                    <input class="form-control" type="password" id="con_password" name="con_password" placeholder="Confirm password">
                                 </div>
-                                <a class="lost-pass" href="reset-password.html">Forgot password?</a>
                             </div>
                             <div class="button">
-                                <button class="btn" type="submit">Sign In</button>
+                                <button class="btn" type="submit">Create Account</button>
                             </div>
-                            <div class="or"><span>Or</span></div>
-                            <div class="alt-option">
-                                <span class="small-title">Sign in with your work email</span>
-                                <a href="javascript:void(0)" class="option-button"><img
-                                        src="images/account-login/google.png" alt="#">Sign
-                                    In With Google
-                                </a>
-                            </div>
-                            <h4 class="create-account">Don't have an account? <a href="/signup">Sign Up Here</a>
+                            <h4 class="create-account">Already have an account? <a href="/signin">Sign In</a>
                             </h4>
                         </div>
                     </form>
@@ -81,6 +76,5 @@
             </div>
         </div>
     </div>
-    <!-- End Account Sign In Area -->
-
+    <!-- End Account Signup Area -->
     <%- include('../partials/footer') %>
