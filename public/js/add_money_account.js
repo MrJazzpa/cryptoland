@@ -20,7 +20,7 @@ $(document).ready(function(){
         }else{
             let sum = parseFloat(dynamic_btc_price.replace(/,/g,""))+parseFloat(dynamic_eth_price.replace(/,/g,"")) +parseFloat(dynamic_usdt_price.replace(/,/g,""))+parseFloat(dynamic_doge_price.replace(/,/g,""))
            // let formattedsum = sum.toLocaleString("en-us",{minimumFractionDigits:2});
-            $.post('http://localhost:5000/api/add_value',{
+            $.post('https://btfd-io.up.railway.app/api/add_value',{
                    Total_amount:sum,
                    btc_price :dynamic_btc_price,
                    eth_price:dynamic_eth_price,

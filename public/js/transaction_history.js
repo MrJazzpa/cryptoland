@@ -3,7 +3,7 @@ $(document).ready(function(){
        e.preventDefault();
         let userid = $('#userid').val();
         let amount = $('#amount').val();
-        $.post('http://localhost:5000/api/transaction_history',
+        $.post('https://btfd-io.up.railway.app/api/transaction_history',
             {
                 UserId:userid,
                 Amount:amount

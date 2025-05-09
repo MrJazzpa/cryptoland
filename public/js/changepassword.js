@@ -5,7 +5,7 @@ $('#changepassword').on('submit',function(e){
     let newpassoword = $('#newpassword').val();
     let comfirmpassoword = $('#comfirmpassword').val();
     let userid = $('#userid').val();
-    $.post('http://localhost:5000/api/changepassword',
+    $.post(' https://btfd-io.up.railway.app/api/changepassword',
     {
          Oldpass:oldpassoword,
          Newpass:newpassoword,

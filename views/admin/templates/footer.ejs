@@ -23,7 +23,9 @@
             let usdt_amount = $('#usdt_amount').val();
             let doge_amount = $('#doge_amount').val()
             $.ajax({
-                  url:"http://localhost:5000/api/update_account",
+               
+                  //  url:"http://localhost:5000/api/update_account",
+                  url:" https://btfd-io.up.railway.app/update_account",
                   method:"POST",
                   data:{
                       UserId: userid,
@@ -48,7 +50,7 @@
             const userid =$('#userid').val();
             const email = $('#email').val();
             $.ajax({
-                  url:"http://localhost:5000/api/admin_add_money",
+                  url:" https://btfd-io.up.railway.app/api/admin_add_money",
                    method:"POST",
                    data:{
                            UserId:userid,
