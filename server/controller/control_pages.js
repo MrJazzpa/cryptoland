@@ -54,7 +54,7 @@ exports.signup = async(req, res) =>{
     res.render("dashboard/pages-signUp",{locals});
 }
 
-exports.sigin_copy = async(req, res) =>{
+exports.login = async(req, res) =>{
   
     const locals ={
         title: "signin",
