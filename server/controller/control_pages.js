@@ -13,14 +13,14 @@ exports.homepage = async(req, res) =>{
 
     res.render("index",{locals});
 }
-exports.about = async(req, res) =>{
+exports.staking = async(req, res) =>{
 
     const locals ={
-        title: "crypland-about",
+        title: "staking",
         description :" bitcoin cryptoland investment website"
     }
 
-    res.render("pages/about-us",{locals});
+    res.render("pages/staking",{locals});
 }
 
 exports.contact = async(req, res) =>{
@@ -32,14 +32,14 @@ exports.contact = async(req, res) =>{
 
     res.render("pages/contact",{locals});
 }
-exports.blog = async(req, res) =>{
+exports.howtobuy = async(req, res) =>{
 
     const locals ={
-        title: "crypland-blog",
+        title: "How-To-Buy",
         description :" bitcoin cryptoland investment website"
     }
 
-    res.render("pages/blog",{locals});
+    res.render("pages/howtoby",{locals});
 }
 
 //Authentication

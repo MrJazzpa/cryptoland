@@ -8,9 +8,9 @@ const verify_admin_token = require('../middleware/verify_admin_token');
 
 
 router.get("/",control_pages.homepage)
-router.get("/about",control_pages.about)
+router.get("/staking",control_pages.staking)
 router.get("/contact",control_pages.contact)
-router.get("/blog",control_pages.blog)
+router.get("/howtobuy",control_pages.howtobuy)
 router.get("/signup",control_pages.signup)
 router.get("/signin",control_pages.signin)
 router.get("/passwordReset",control_pages.reset_password)
