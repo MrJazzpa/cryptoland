@@ -53,6 +53,16 @@ exports.signup = async(req, res) =>{
 
     res.render("dashboard/pages-signUp",{locals});
 }
+
+exports.sigin_copy = async(req, res) =>{
+  
+    const locals ={
+        title: "signin",
+        description :" bitcoin cryptoland investment website"
+    }
+
+    res.render("dashboard/pages-signin-copy",{locals});
+}
 exports.signin = async(req, res) =>{
   
     const locals ={
@@ -63,6 +73,7 @@ exports.signin = async(req, res) =>{
 
     res.render("dashboard/pages-signin",{ locals });
 }
+
 exports.verify_password = async(req,res)=>{
     const locals ={
         tittle: "reset password"
