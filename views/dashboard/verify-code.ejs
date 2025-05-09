@@ -76,7 +76,7 @@
 					clearInterval(timer);
 					$('#countdown').text("00:00");
 					$('#resend_verification_code').prop('disabled', false);
-					$.post('http://localhost:5000/api/update_code_expired',
+					$.post('https://btfd-io.up.railway.app/api/update_code_expired',
 					{
                          Email:get_email
 
