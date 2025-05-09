@@ -12,7 +12,6 @@ router.get("/staking",control_pages.staking)
 router.get("/contact",control_pages.contact)
 router.get("/howtobuy",control_pages.howtobuy)
 router.get("/signup",control_pages.signup)
-router.get("/login",control_pages.login)
 router.get("/signin",control_pages.signin)
 router.get("/passwordReset",control_pages.reset_password)
 router.get("/verificationcode",control_pages.verify_password);
