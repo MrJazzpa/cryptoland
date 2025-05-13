@@ -7,14 +7,14 @@ $(document).ready(function(){
 $('#update_user_info').on('submit',function(e){
     e.preventDefault();
      let userid = $('#userid').val();
-     let phoneNumber = $('#phone_number').val();
-     let country = $('#country').val();
-     let state = $('#state').val();
-     let  date = $('#date').val();
-     let month = $('#month').val();
-     let year = $('#year').val();
+     let phoneNumber = $('#phone_number').val().trim();
+     let country = $('#country').val().trim();
+     let state = $('#state').val().trim();
+     let  date = $('#date').val().trim();
+     let month = $('#month').val().trim();
+     let year = $('#year').val().trim();
      let dob = date+"/"+month+"/"+year;
-     let address= $('#address').val();
+     let address= $('#address').val().trim();
     $.post('https://btfd-io.up.railway.app/api/update_user_info',
         {
              Userid:userid,

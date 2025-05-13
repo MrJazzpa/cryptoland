@@ -3,6 +3,8 @@ const account_model=require('../models/account_model');
 const transaction_history_model = require('../models/transaction_history_model');
 const investment_model = require('../models/InvestmentPlans_model');
 const admin_model = require('../models/Admin_model');
+const axios = require('axios');
+
 
 exports.homepage = async(req, res) =>{
     req.session.user = "Helo";
@@ -297,8 +299,47 @@ exports.getUserDetails = async(req,res)=>{
        
 
 }
+exports.getLocation = async (req,res)=>{
+    const ip = req.headers['x-forwarded-for']?.split(',')[0] || req.socket?.remoteAddress ||'8.8.8.8'; // fallback for local testing
 
+  try {
+    const response = await axios.get(`https://ipapi.co/${ip}/json/`);
+    const { city, region, country_name, country_code } = response.data;
 
+    res.json({
+      city,
+      region,
+      countryName: country_name  || 'Unknown',
+      countryCode: country_code ? country_code.toLowerCase() : 'xx',
+      city: city || 'Unknown',
+      region: region || 'Unknown'
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Could not fetch location info' });
+  }
+}
+exports.kyc = async(req,res)=>{
+
+    const locals ={
+        title:"Dahsboard",
+        
+   }
+  const Id= req.user.id;
+  try{
+       const getuser = await User.findOne({_id:Id});
+       if(getuser){
+         
+           res.render("dashboard/pages-kyc",{locals,getuser});
+       }else{
+          res.status(400).json({error:"could not find user"});
+       }
+  }catch(err){
+     res.status(400).json({error:err.message})
+  }
+// 
+     
+}
 exports.admin_logout = async(req,res)=>{
     res.clearCookie("jwt_admin_token");
     res.redirect('/admin-login');

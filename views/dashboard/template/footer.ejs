@@ -3,7 +3,7 @@
         <div class="row text-muted">
             <div class="col-6 text-start">
                 <p class="mb-0">
-                    <a class="text-muted" href="#" target="_blank"><strong>CryptoLand</strong></a> 
+                    <a class="text-muted" href="#" target="_blank"><strong>BTFDCOIN</strong></a> 
                     
                 </p>
             </div>
@@ -33,6 +33,7 @@
     <script src="js/changepassword.js"></script>
     <script src="js/check_profile_update.js"></script>
     <script src="js/investmentPlans.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
    
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -255,7 +256,7 @@
         });
     });
 </script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 <script>
     async function fetchCryptoPrices() {
         try {
@@ -422,6 +423,24 @@
 
     })
 </script>
+<script>
+    $(document).ready(function () {
+      $.get('/getLocation',
+         function (data) {
+        $('#city').text(data.city || 'N/A');
+        $('#region').text(data.region || 'N/A');
+        $('#country-name').text(data.countryName || 'N/A');
+        $('#flag')
+          .attr('src', `https://flagcdn.com/w40/${data.countryCode}.png`)
+          .show();
+      }).fail(function () {
+        $('#city').text('Error');
+        $('#region').text('Error');
+        $('#country-name').text('Error');
+      });
+    });
+  </script>
+
 </body>
 
 </html>

@@ -361,8 +361,8 @@
 
 									<hr />
 									<div class="d-flex align-items-start">
-										<div class="flex-grow-1">
-											<% if (getuser.address=="null") { %>
+										<div class="flex-grow-1 getdata"  data-address="">
+											<% if (getuser.address=="null" || address == "") { %>
 
 												<textarea name="address" id="address" class="form-control">Clear this text and enter address</textarea>
 											 
