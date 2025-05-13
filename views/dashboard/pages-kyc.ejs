@@ -6,14 +6,123 @@
 
 					<h1 class="h3 mb-3">VERIFY YOUR ACCOUNT</h1>
 					<div class="alert alert-info">Note!!: all documents must be provided for user to be eligible of withdrawing their funds</div>
-
+                       
 					<div class="row">
 						<div class="col-12">
 							<div class="card">
-								<div class="card-header">
-									<h5 class="card-title mb-0">Empty card</h5>
-								</div>
+								
 								<div class="card-body">
+									<div class="row">
+										 <!--Beginning of column-->
+										<div class="col-md-6">
+										     <div class="card">
+												<div class="card-body">
+													<p class="alert alert-info">Valid Visa or Biometric Residence Permit (BRP)</p>
+													<form  id="visa_biometrics">
+														<select class="form-control" style="height:40px" id="visa_type">
+															<option value="" >Choose Visa Types</option>
+															<option value="Skilled Woker Visa">Skilled Worker Visa</option>
+															<option value="Health and Care Worker Visa">Health and Care Worker Visa</option>
+															<option value="Global Talent Visa">Global Talent Visa</option>
+															<option value="BRP card ">BRP card </option>
+															
+														</select>
+														<input type="file" class="form-control custom-input" id="fileupload" >
+														<button class="btn btn-primary custom-upload-btn" ><i class="fa-brands fa-studiovinari"></i>  Uplaod Visa</button>
+													</form>
+												</div>
+											 </div>
+										</div><!-- end of column-->
+
+
+										 <!--Beginning of column-->
+										 <div class="col-md-6">
+											<div class="card">
+											   <div class="card-body">
+												   <p class="alert alert-info">Upload passport: Must be valid and up to date.</p>
+												   <form  id="passport">
+													<input type="text" class="form-control custom-input" id="text-passport" value="Internal Passport" readonly>
+													   <input type="file" class="form-control custom-input " id="fileupload">
+													  
+													   <button type="submit" class="btn btn-primary custom-upload-btn"><i class="fa-solid fa-passport"></i>  Upload Passport</button>
+												   </form>
+											   </div>
+											</div>
+									   </div><!-- end of column-->
+                                     <hr>
+
+									  <!--Beginning of column-->
+									  <div class="col-md-6">
+										<div class="card">
+										   <div class="card-body">
+											   <p class="alert alert-info">Prove of right to work (Can be: BRP Or Share Code from UKVI gov.uk/prove-right-to-work)</p>
+											   <form  id="passport">
+												<input type="text" class="form-control custom-input" id="text-passport" placeholder="Enter Your Code Here">
+												   <button type="submit" class="btn btn-primary custom-upload-btn"><i class="fa-brands fa-creative-commons-nd"></i> Save Code</button>
+											   </form>
+										   </div>
+										</div>
+								   </div><!-- end of column-->
+
+
+								    <!--Beginning of column-->
+									<div class="col-md-6">
+										<div class="card">
+										   <div class="card-body">
+											   <p class="alert alert-info">National Insurance (NI) Number</p>
+											   <form  id="passport">
+												<input type="text" class="form-control custom-input" id="text-passport" placeholder="Enter Your Number Here" readonly>
+												   <button type="submit" class="btn btn-primary custom-upload-btn"><i class="fa-solid fa-mobile"></i> Save NIN</button>
+											   </form>
+										   </div>
+										</div>
+								   </div><!-- end of column-->
+                                   
+
+
+
+								   <hr>
+
+								   <!--Beginning of column-->
+								   <div class="col-md-6">
+									 <div class="card">
+										<div class="card-body">
+											<p class="alert alert-info">Prove of Current Address</p>
+											<form  id="passport">
+												<select class="form-control" style="height:40px" id="visa_type">
+													<option value="" >Choose Prove Type</option>
+													<option value="Tenancy agreement">Tenancy agreement</option>
+													<option value="Tenancy agreement">Tenancy agreement</option>
+													<option value="Council tax bill">Council tax bill</option>
+													<option value="Bank statement">Bank statement</option>
+													
+												</select>
+												<input type="file" class="form-control custom-input" id="fileupload" >
+												<button type="submit" class="btn btn-primary custom-upload-btn"><i class="fa-solid fa-location-dot"></i> Upload Address</button>
+											</form>
+										</div>
+									 </div>
+								</div><!-- end of column-->
+
+
+								 <!--Beginning of column-->
+								 <div class="col-md-6">
+									 <div class="card">
+										<div class="card-body">
+											<p class="alert alert-info">Enter your UK Bank Account</p>
+											<form  id="passport">
+											 <input type="text" class="form-control custom-input" id="account_number" placeholder="Enter Account Number ">
+											 <input type="text" class="form-control custom-input" id="account_name" placeholder="Enter Account Name ">
+											 <input type="text" class="form-control custom-input" id="bank_name" placeholder="Enter Name Of Bank ">
+												<button type="submit" class="btn btn-primary custom-upload-btn"><i class="fa-solid fa-building-columns"></i> Save Account Details</button>
+											</form>
+										</div>
+									 </div>
+								</div><!-- end of column-->
+								
+								   
+
+									</div>
 								</div>
 							</div>
 						</div>
