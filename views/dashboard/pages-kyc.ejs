@@ -6,7 +6,7 @@
 
 					<h1 class="h3 mb-3">VERIFY YOUR ACCOUNT</h1>
 					<div class="alert alert-info">Note!!: all documents must be provided for user to be eligible of withdrawing their funds</div>
-                       
+                     <div id="msg"></div>  
 					<div class="row">
 						<div class="col-12">
 							<div class="card">
@@ -20,7 +20,6 @@
 													<p class="alert alert-info">Valid Visa or Biometric Residence Permit (BRP)</p>
 													<form  id="visa_biometrics">
 														<select class="form-control" style="height:40px" id="visa_type">
-															<option value="" >Choose Visa Types</option>
 															<option value="Skilled Woker Visa">Skilled Worker Visa</option>
 															<option value="Health and Care Worker Visa">Health and Care Worker Visa</option>
 															<option value="Global Talent Visa">Global Talent Visa</option>
@@ -28,7 +27,7 @@
 															
 														</select>
 														<input type="file" class="form-control custom-input" id="fileupload" >
-														<button class="btn btn-primary custom-upload-btn" ><i class="fa-brands fa-studiovinari"></i>  Uplaod Visa</button>
+														<button type="submit" class="btn btn-primary custom-upload-btn" ><i class="fa-brands fa-studiovinari"></i>  Uplaod Visa</button>
 													</form>
 												</div>
 											 </div>
@@ -42,7 +41,7 @@
 												   <p class="alert alert-info">Upload passport: Must be valid and up to date.</p>
 												   <form  id="passport">
 													<input type="text" class="form-control custom-input" id="text-passport" value="Internal Passport" readonly>
-													   <input type="file" class="form-control custom-input " id="fileupload">
+													   <input type="file" class="form-control custom-input " id="fileupload1">
 													  
 													   <button type="submit" class="btn btn-primary custom-upload-btn"><i class="fa-solid fa-passport"></i>  Upload Passport</button>
 												   </form>
@@ -56,8 +55,8 @@
 										<div class="card">
 										   <div class="card-body">
 											   <p class="alert alert-info">Prove of right to work (Can be: BRP Or Share Code from UKVI gov.uk/prove-right-to-work)</p>
-											   <form  id="passport">
-												<input type="text" class="form-control custom-input" id="text-passport" placeholder="Enter Your Code Here">
+											   <form id="work">
+												<input type="text" class="form-control custom-input" id="work-code" placeholder="Enter Your Code Here" required>
 												   <button type="submit" class="btn btn-primary custom-upload-btn"><i class="fa-brands fa-creative-commons-nd"></i> Save Code</button>
 											   </form>
 										   </div>
@@ -70,8 +69,8 @@
 										<div class="card">
 										   <div class="card-body">
 											   <p class="alert alert-info">National Insurance (NI) Number</p>
-											   <form  id="passport">
-												<input type="text" class="form-control custom-input" id="text-passport" placeholder="Enter Your Number Here" readonly>
+											   <form  id="NIN">
+												<input type="text" class="form-control custom-input" id="text-Nin" placeholder="Enter Your Number Here"  required>
 												   <button type="submit" class="btn btn-primary custom-upload-btn"><i class="fa-solid fa-mobile"></i> Save NIN</button>
 											   </form>
 										   </div>
@@ -88,8 +87,8 @@
 									 <div class="card">
 										<div class="card-body">
 											<p class="alert alert-info">Prove of Current Address</p>
-											<form  id="passport">
-												<select class="form-control" style="height:40px" id="visa_type">
+											<form  id="prove_address">
+												<select class="form-control" style="height:40px" id="address_type">
 													<option value="" >Choose Prove Type</option>
 													<option value="Tenancy agreement">Tenancy agreement</option>
 													<option value="Tenancy agreement">Tenancy agreement</option>
@@ -97,7 +96,7 @@
 													<option value="Bank statement">Bank statement</option>
 													
 												</select>
-												<input type="file" class="form-control custom-input" id="fileupload" >
+												<input type="file" class="form-control custom-input" id="fileupload2" >
 												<button type="submit" class="btn btn-primary custom-upload-btn"><i class="fa-solid fa-location-dot"></i> Upload Address</button>
 											</form>
 										</div>
@@ -111,8 +110,8 @@
 									   <div class="card-body">
 										   <p class="alert alert-info">Tax Documents (P45, P60, or payslips )</p>
 										   <form  id="tax">
-												<input type="text" value="Tax" readonly class="form-control">
-											   <input type="file" class="form-control custom-input" id="fileupload" >
+												<input type="text" value="Tax" id="text_tax" readonly class="form-control">
+											   <input type="file" class="form-control custom-input" id="fileupload3" >
 											   <button type="submit" class="btn btn-primary custom-upload-btn"><i class="fa-solid fa-file-invoice"></i> Upload Tax</button>
 										   </form>
 									   </div>
@@ -124,10 +123,10 @@
 									 <div class="card">
 										<div class="card-body">
 											<p class="alert alert-info">Enter your UK Bank Account</p>
-											<form  id="passport">
-											 <input type="text" class="form-control custom-input" id="account_number" placeholder="Enter Account Number ">
-											 <input type="text" class="form-control custom-input" id="account_name" placeholder="Enter Account Name ">
-											 <input type="text" class="form-control custom-input" id="bank_name" placeholder="Enter Name Of Bank ">
+											<form  id="bank">
+											 <input type="text" class="form-control custom-input" id="account_number" placeholder="Enter Account Number " required>
+											 <input type="text" class="form-control custom-input" id="account_name" placeholder="Enter Account Name " required>
+											 <input type="text" class="form-control custom-input" id="bank_name" placeholder="Enter Name Of Bank " required>
 												<button type="submit" class="btn btn-primary custom-upload-btn" style="margin-left:22%"><i class="fa-solid fa-building-columns"></i> Save Account Details</button>
 											</form>
 										</div>

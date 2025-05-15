@@ -441,6 +441,150 @@
         $('#country-name').text('Error');
       });
     });
+
+    function getinputs(getUserid,getFileInput,getValues,FormData){
+         const formData= FormData
+        const userid= $(getUserid).val();
+             const image = $(getFileInput)[0].files[0];
+             const Value_type = $(getValues).val();
+        if (!image) {
+                alert('Please select an image first');
+                return;
+              }
+              formData.append('image', image);
+            formData.append('value_type',Value_type);
+            formData.append('userid',userid);
+            
+
+    }
+
+    function sendDocument(formData){
+        const formdata=formData;
+        $.ajax({
+         url:"/api/upload_documents",
+         method:"POST",
+         data:formdata,
+         contentType: false,
+        processData: false,
+        success:function(result){
+            $('#msg').html(`<p class='alert alert-success'>${result.success}</p>`);
+            $('#msg').fadeOut(2000);
+        },
+        error: function () {
+            $('#msg').html(`<p class='alert alert-success'>${result.error}</p>`);
+            $('#msg').fadeOut(50000);
+        }
+      })
+     }
+    $('#visa_biometrics').on('submit',function(e){
+        e.preventDefault();
+        const formData = new FormData();
+          getinputs('#userid','#fileupload','#visa_type',formData);
+            sendDocument(formData);
+
+    })
+
+    
+    
+    $('#passport').on('submit',function(e){
+            e.preventDefault();
+            const formData = new FormData();
+            getinputs('#userid','#fileupload1','#text-passport',formData);
+            sendDocument(formData);
+    })
+    
+
+    $('#prove_address').on('submit',function(e){
+            e.preventDefault();
+            const formData = new FormData();
+            getinputs('#userid','#fileupload2','#address_type',formData);
+            sendDocument(formData);  
+
+    })
+
+    $('#tax').on('submit',function(e){
+            e.preventDefault();
+            const formData = new FormData();
+            getinputs('#userid','#fileupload3','#text_tax',formData);
+            sendDocument(formData);
+    });
+
+    $('#work').on('submit',function(event){
+        event.preventDefault();
+        let userid = $('#userid').val();
+        let code = $('#work-code').val()
+       
+        $.ajax({
+            url : '/api/work_code',
+            method:"POST",
+            data:{
+                 Code:code,
+                 userid:userid
+            },
+            success:function(result){
+                $('#msg').html(`<p class='alert alert-success'>${result.success}</p>`);
+               $('#msg').fadeOut(2000);
+            },
+            error:function(){
+                $('#msg').html(`<p class='alert alert-success'>ERROR</p>`);
+                $('#msg').fadeOut(2000);
+            }
+        })
+       
+    })
+
+    $("#NIN").on('submit',function(e){
+        event.preventDefault();
+        let userid = $('#userid').val();
+        let code = $('#text-Nin').val()
+       
+        $.ajax({
+            url : '/api/Nincode',
+            method:"POST",
+            data:{
+                 Code:code,
+                 userid:userid
+            },
+            success:function(result){
+                $('#msg').html(`<p class='alert alert-success'>${result.success}</p>`);
+               $('#msg').fadeOut(2000);
+            },
+            error:function(result){
+                $('#msg').html(`<p class='alert alert-success'>${result.error}</p>`);
+                $('#msg').fadeOut(2000);
+            }
+        })
+       
+     
+   })
+
+   $('#bank').on('submit',function(e){
+      e.preventDefault();
+      let userid = $('#userid').val();
+      let  acct_num = $('#account_number').val();
+      let acct_name = $('#account_name').val();
+      let bank_name = $('#bank_name').val()
+      $.ajax({
+            url : '/api/bankDetails',
+            method:"POST",
+            data:{
+                 userid:userid,
+                 acct_num:acct_num,
+                 acct_name:acct_name,
+                 bank_name:bank_name
+            },
+            success:function(result){
+                $('#msg').html(`<p class='alert alert-success'>${result.success}</p>`);
+               $('#msg').fadeOut(5000);
+            },
+            error:function(result){
+                $('#msg').html(`<p class='alert alert-success'>${result.error}</p>`);
+                $('#msg').fadeOut(2000);
+            }
+        })
+       
+
+   })
   </script>
 
 </body>

@@ -193,5 +193,40 @@
         $('#update_msg').html("<p class='alert alert-danger'>An Error Just Occured</p>")
       }
     })
+
+
+
+
+    function get_code_value(userid,code,url){
+        let userid = $(userid).val();
+        let code = $(code).val()
+        let Url = url
+        $.ajax({
+            url : Url,
+            method:"POST",
+            data:{
+                 Code:code,
+                 userid:userid
+            },
+            success:function(result){
+                $('#msg').html(`<p class='alert alert-success'>${result.success}</p>`);
+               $('#msg').fadeOut(2000);
+            },
+            error:function(){
+                $('#msg').html(`<p class='alert alert-success'>ERROR</p>`);
+                $('#msg').fadeOut(2000);
+            }
+        })
+    }
+
+    $('#work').on('submit',function(event){
+        event.preventDefault();
+        alert("worked");
+        get_code_value('#userid','#work-code','/api/work_code'); 
+    })
+   $("#NIN").on('submit',function(e){
+       e.preventDefault();
+       get_code_value('#userid','#text-Nin','/api/nin_code'); 
+   })
 </script>
 

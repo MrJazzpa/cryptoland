@@ -9,6 +9,8 @@ const transaction_history_model = require('../models/transaction_history_model')
 const investment_model = require('../models/InvestmentPlans_model');
 const investment_history = require('../models/investment_history');
 const Admin_model = require('../models/Admin_model');
+const kyc_document_model = require('../models/kyc_document_upload');
+const bank_model = require('../models/bank_model');
 const { json } = require('express');
 const { parse } = require('dotenv');
 
@@ -648,6 +650,74 @@ exports.post_signup = async(req, res) =>{
 
 
 }
+
+exports.upload_documents = async(req,res)=>{
+    const userid = req.body.userid;
+     const value_type = req.body.value_type;
+      const file = req.file.filename;
+      try{
+
+           const send_document = await kyc_document_model.create({userid:userid,document_type:value_type,file:file})
+           if(send_document){
+                    res.json({success:"Your Document has been uploaded Please Wait For Verification"});
+           }else{
+                    res.json({error:"Could Not Upload Document"});
+           }
+
+      }catch(err){
+          res.json({error:err.message});
+      }
+      
+}
+
+exports.saveWorkCode = async(req,res)=>{
+     const code = req.body.Code;
+     const userid = req.body.userid
+     try{
+        const result = await kyc_document_model.updateOne({userid:userid},{work_code:code});
+        if(result){
+            res.json({success:"Your Document has been uploaded Please Wait For Verification"})
+        }else{
+            res.json({error:"Could Not Upload Document"});
+        }
+  }catch(error){
+     res.status(500).json({error:error.message})
+  }
+     
+}
+ exports.Nincode = async(req,res)=>{
+    const code = req.body.Code;
+    const userid = req.body.userid
+    try{
+       const result = await kyc_document_model.updateOne({userid:userid},{Nin:code});
+       if(result){
+           res.json({success:"Your Document has been uploaded Please Wait For Verification"})
+       }else{
+        console.log("not working")
+           res.json({error:"Could Not Upload Document"});
+       }
+ }catch(error){
+    console.log(error.message)
+    res.status(500).json({error:error.message})
+ }
+ }
+
+ exports.bankDetails = async(req,res)=>{
+      const userid = req.body.userid;
+      const acct_num = req.body.acct_num;
+      const acct_name = req.body.acct_name;
+      const bank_name = req.body.bank_name;
+       try{
+        const saveBank = await bank_model.create({userid:userid,account_number:acct_num,account_name:acct_name,bank_name:bank_name});
+        if(saveBank){
+         res.json({success:`Money will be sent to ${acct_num}, please make sure the name of the account corresponds with the name on your profile  `})
+        }else{
+            res.json({success:"Saving bank details failed"})
+        }
+       }catch(err){
+            res.status(500).json({error:err.message})
+       }
+ }
 
 exports.insert_investment_history = async(req,res)=>{
     res.json('wprked')
