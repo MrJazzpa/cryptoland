@@ -8,7 +8,7 @@ $(document).ready(function(){
         $('#msg').html("<p class='alert alert-warning' style'text-align:center'>Please fill the inputs before submitting</p>");
     }else{
           $.ajax({
-              url:'https://btfd-io.up.railway.app/api/admin_login',
+              url:'/api/admin_login',
               method: 'POST',
               data:{
                      Username:username,

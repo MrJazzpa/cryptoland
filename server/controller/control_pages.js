@@ -3,6 +3,7 @@ const account_model=require('../models/account_model');
 const transaction_history_model = require('../models/transaction_history_model');
 const investment_model = require('../models/InvestmentPlans_model');
 const admin_model = require('../models/Admin_model');
+const kyc_model = require('../models/kyc_document_upload');
 const axios = require('axios');
 
 
@@ -299,6 +300,30 @@ exports.getUserDetails = async(req,res)=>{
        
 
 }
+exports.adminkyc = async(req,res)=>{
+    const id = req.admin.id;
+    const local ={
+           tittle:"Kyc"
+   }
+   try{
+    const getAdmin = await admin_model.findOne({_id:id});
+    const Allusers = await kyc_model.find();
+   if(getAdmin){
+       res.render('admin/kycdocuments',
+           {
+               local,
+               getAdmin,
+               Allusers
+               
+           });
+   }else{
+           res.status(400).json({error:"Could not find user"})
+   }
+
+   }catch(err){
+       res.status(400).json({error:err.message});
+   }
+}
 exports.getLocation = async (req,res)=>{
     const ip = req.headers['x-forwarded-for']?.split(',')[0] || req.socket?.remoteAddress ||'8.8.8.8'; // fallback for local testing
 
@@ -340,6 +365,7 @@ exports.kyc = async(req,res)=>{
 // 
      
 }
+
 exports.admin_logout = async(req,res)=>{
     res.clearCookie("jwt_admin_token");
     res.redirect('/admin-login');

@@ -28,7 +28,7 @@ router.get('/user-profile',verify_ejs_token,control_pages.user_profile)
 router.get('/changepassword',verify_ejs_token,control_pages.change_password);
 router.get('/kyc', verify_ejs_token,control_pages.kyc);
 router.get('/logout',control_pages.logout);
- 
+
 
 // Admin routes
 router.get('/admin-login',control_pages.admin_login);
@@ -36,4 +36,5 @@ router.get('/admin_logout',control_pages.admin_logout);
 router.get('/admin-dashboard',veryify_admin_token,control_pages.AdminDashboard);
 router.get('/users',verify_admin_token,control_pages.AllUsers);
 router.get('/user-details',verify_admin_token,control_pages.getUserDetails)
+router.get('/admin-kyc',verify_admin_token,control_pages.adminkyc)
 module.exports = router;
