@@ -126,6 +126,49 @@
 									<div class="card-body">
 
 										<div class="row">
+											<div class="col-md-6">
+												<div class="card">
+
+													<div class="card-body">
+														<div class="row">
+															<div class="col mt-0">
+																<h5 class="card-title">TRON Balance</h5>
+															</div>
+
+															<div class="col-auto">
+																<div class="stat text-primary" >
+																	<img src="/img/tron (1).png">
+																</div>
+															</div>
+														</div>
+														<h1 class="mt-1 mb-3" id="staticDOGEPrice">36,363,636</h1>
+
+
+														<input type="hidden" id="static_doge_price"
+															value="<%= get_balance.Usdt_Amount %>">
+														<input type="hidden" id="dynamic_doge_price"
+															name="dynamic_doge_price" value="0" readonly>
+														<div class="mb-0">
+															<span class="text-danger">
+																<i class="mdi mdi-arrow-bottom-right"
+																	id="dogeChange24h">Pay $2,500  gas fee</i>
+															</span>
+															<span class="text-muted"></span>
+														</div>
+														<div class="row">
+															<div class="col-md-4"></div>
+															<div class="col-md-4"></div>
+															<div class="col-md-4">
+																<button type="button" class="btn btn-outline-secondary"
+																	data-bs-toggle="modal"
+																	data-bs-target="#DogeModal">Deposit Tron</button>
+															</div>
+														</div>
+													</div>
+
+												</div>
+
+											</div><!--end of column-->
 
 											<div class="col-md-6">
 												<div class="card">
@@ -304,6 +347,9 @@
 												</div>
 
 											</div><!--end of column-->
+
+
+										
 
 
 										</div>
